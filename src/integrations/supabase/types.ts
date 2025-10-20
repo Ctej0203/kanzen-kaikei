@@ -14,7 +14,125 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      favorite_messages: {
+        Row: {
+          created_at: string
+          id: string
+          message_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorite_messages_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "homehome_messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      homehome_messages: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          message: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          message: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          message?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          created_at: string
+          currently_treating: boolean | null
+          diagnosed: boolean | null
+          diagnosis_year: number | null
+          id: string
+          onboarding_completed: boolean | null
+          triggers: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          created_at?: string
+          currently_treating?: boolean | null
+          diagnosed?: boolean | null
+          diagnosis_year?: number | null
+          id?: string
+          onboarding_completed?: boolean | null
+          triggers?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          created_at?: string
+          currently_treating?: boolean | null
+          diagnosed?: boolean | null
+          diagnosis_year?: number | null
+          id?: string
+          onboarding_completed?: boolean | null
+          triggers?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      symptom_records: {
+        Row: {
+          created_at: string
+          id: string
+          memo: string | null
+          mood_score: number
+          recorded_at: string
+          tags: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          memo?: string | null
+          mood_score: number
+          recorded_at?: string
+          tags?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          memo?: string | null
+          mood_score?: number
+          recorded_at?: string
+          tags?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
