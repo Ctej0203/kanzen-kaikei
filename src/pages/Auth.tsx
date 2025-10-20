@@ -72,12 +72,14 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background p-4">
+      <Card className="w-full max-w-md shadow-xl hover:shadow-2xl transition-shadow border-2 border-primary/20">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">Curely</CardTitle>
-          <CardDescription>
-            パニック障害サポートアプリ
+          <CardTitle className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+            ✨ Curely
+          </CardTitle>
+          <CardDescription className="text-base font-medium">
+            💖 パニック障害サポートアプリ
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -107,9 +109,9 @@ const Auth = () => {
                 minLength={6}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full shadow-lg hover:shadow-xl transition-all hover-lift font-bold" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isLogin ? "ログイン" : "アカウント作成"}
+              {isLogin ? "✨ ログイン" : "✨ アカウント作成"}
             </Button>
             <Button
               type="button"

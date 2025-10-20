@@ -104,34 +104,40 @@ export const HomehomeCard = () => {
   }, []);
 
   return (
-    <Card className="w-full bg-gradient-to-br from-accent/10 to-primary/10">
+    <Card className="w-full gradient-calm shadow-lg hover:shadow-xl transition-all hover-lift border-2 border-primary/20">
       <CardContent className="pt-6">
         <div className="space-y-4">
           <div className="text-center">
-            <h3 className="text-lg font-semibold mb-4">今日のほめほめ</h3>
+            <h3 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
+              <span className="text-3xl animate-wiggle">💖</span>
+              今日のほめほめ
+              <span className="text-3xl animate-wiggle">💖</span>
+            </h3>
             {currentMessage && (
-              <p className="text-xl font-medium leading-relaxed">
+              <p className="text-2xl font-bold leading-relaxed text-white drop-shadow-lg">
                 {currentMessage.message}
               </p>
             )}
           </div>
           
-          <div className="flex gap-2 justify-center">
+          <div className="flex gap-3 justify-center">
             <Button
               variant="outline"
               size="icon"
               onClick={toggleFavorite}
               disabled={!currentMessage}
+              className="hover-lift shadow-md hover:shadow-lg transition-all bg-white/80 backdrop-blur-sm border-2"
             >
               <Heart
-                className={`h-5 w-5 ${isFavorite ? "fill-current text-destructive" : ""}`}
+                className={`h-6 w-6 transition-all ${isFavorite ? "fill-current text-destructive scale-110" : ""}`}
               />
             </Button>
             <Button
               onClick={fetchRandomMessage}
               disabled={loading}
+              className="shadow-lg hover:shadow-xl transition-all hover-lift font-bold bg-white/90 text-primary hover:bg-white"
             >
-              <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`mr-2 h-5 w-5 ${loading ? "animate-spin" : ""}`} />
               次のメッセージ
             </Button>
           </div>

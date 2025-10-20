@@ -73,16 +73,19 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background">
+      <header className="border-b bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Curely</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-wiggle">
+              ✨ Curely
+            </h1>
             <div className="flex gap-2">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate("/records")}
+                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all"
               >
                 <FileText className="h-5 w-5" />
               </Button>
@@ -90,6 +93,7 @@ const Index = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate("/settings")}
+                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all"
               >
                 <Settings className="h-5 w-5" />
               </Button>
@@ -97,6 +101,7 @@ const Index = () => {
                 variant="ghost"
                 size="icon"
                 onClick={handleSignOut}
+                className="hover-lift hover:bg-destructive/10 hover:text-destructive transition-all"
               >
                 <LogOut className="h-5 w-5" />
               </Button>
@@ -106,18 +111,24 @@ const Index = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-2xl">
-        <div className="space-y-6">
-          <section>
-            <h2 className="text-xl font-semibold mb-4">今日の調子</h2>
+        <div className="space-y-8">
+          <section className="hover-lift">
+            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+              <span className="text-3xl">💝</span>
+              今日の調子
+            </h2>
             <MoodLogger />
           </section>
 
-          <section>
-            <h2 className="text-xl font-semibold mb-4">呼吸法ガイド</h2>
+          <section className="hover-lift">
+            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+              <span className="text-3xl">🌸</span>
+              呼吸法ガイド
+            </h2>
             <BreathingGuide />
           </section>
 
-          <section>
+          <section className="hover-lift">
             <HomehomeCard />
           </section>
         </div>

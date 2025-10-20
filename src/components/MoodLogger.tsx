@@ -47,14 +47,14 @@ export const MoodLogger = () => {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full shadow-lg hover:shadow-xl transition-all hover-lift gradient-card border-2 border-accent/20">
       <CardHeader>
-        <CardTitle className="text-lg">今日の調子を記録</CardTitle>
+        <CardTitle className="text-xl font-bold">📝 記録する</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm">
-            <span>調子: {moodScore[0]}</span>
+        <div className="space-y-3">
+          <div className="flex justify-between text-sm font-medium">
+            <span className="text-lg">調子: {moodScore[0]}</span>
             <span className="text-muted-foreground">0: とても悪い - 10: とても良い</span>
           </div>
           <Slider
@@ -73,16 +73,17 @@ export const MoodLogger = () => {
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
             rows={3}
+            className="resize-none border-2"
           />
         </div>
 
         <Button 
           onClick={handleSubmit} 
           disabled={loading}
-          className="w-full"
+          className="w-full shadow-lg hover:shadow-xl transition-all hover-lift font-bold"
         >
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          記録する
+          ✨ 記録する
         </Button>
       </CardContent>
     </Card>

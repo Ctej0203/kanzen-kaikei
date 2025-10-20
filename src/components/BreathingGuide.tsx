@@ -77,15 +77,17 @@ export const BreathingGuide = () => {
   const isComplete = !isActive && currentSet === TOTAL_SETS && phase === "rest";
 
   return (
-    <Card className="w-full">
+    <Card className="w-full shadow-lg hover:shadow-xl transition-shadow gradient-card border-2 border-primary/10">
       <CardContent className="pt-6">
         <div className="space-y-6">
           <div className="text-center space-y-2">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground font-medium">
               セット {currentSet} / {TOTAL_SETS}
             </div>
-            <div className="text-4xl font-bold">{PHASE_LABELS[phase]}</div>
-            <div className="text-6xl font-bold text-primary">
+            <div className="text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              {PHASE_LABELS[phase]}
+            </div>
+            <div className="text-7xl font-bold text-primary animate-bounce-soft">
               {Math.ceil(currentDuration - seconds)}
             </div>
           </div>
@@ -93,17 +95,17 @@ export const BreathingGuide = () => {
           <Progress value={progress} className="h-2" />
 
           {isComplete && (
-            <div className="text-center text-accent font-medium">
-              お疲れ様でした！
+            <div className="text-center text-success font-bold text-xl animate-bounce-soft">
+              ✨ お疲れ様でした！ ✨
             </div>
           )}
 
-          <div className="flex gap-2 justify-center">
+          <div className="flex gap-3 justify-center">
             <Button
               size="lg"
               onClick={() => setIsActive(!isActive)}
               disabled={isComplete}
-              className="min-w-[120px]"
+              className="min-w-[140px] shadow-lg hover:shadow-xl transition-all hover-lift font-bold"
             >
               {isActive ? (
                 <>
@@ -113,7 +115,7 @@ export const BreathingGuide = () => {
               ) : (
                 <>
                   <Play className="mr-2 h-5 w-5" />
-                  {currentSet === 1 && seconds === 0 ? "開始" : "再開"}
+                  {currentSet === 1 && seconds === 0 ? "✨ 開始" : "再開"}
                 </>
               )}
             </Button>
@@ -121,6 +123,7 @@ export const BreathingGuide = () => {
               size="lg"
               variant="outline"
               onClick={handleReset}
+              className="shadow-md hover:shadow-lg transition-all hover-lift border-2 font-bold"
             >
               <RotateCcw className="mr-2 h-5 w-5" />
               リセット
