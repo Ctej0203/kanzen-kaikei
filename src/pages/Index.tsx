@@ -8,6 +8,7 @@ import { HomehomeCard } from "@/components/HomehomeCard";
 import { MoodLogger } from "@/components/MoodLogger";
 import { LogOut, Settings, FileText } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import curaCharacter from "@/assets/cura-character.png";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -73,7 +74,14 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background relative">
+      {/* Floating character */}
+      <img 
+        src={curaCharacter} 
+        alt="Cura" 
+        className="fixed bottom-4 right-4 w-24 h-24 md:w-32 md:h-32 animate-bounce-soft z-50 pointer-events-none"
+      />
+      
       <header className="border-b bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">

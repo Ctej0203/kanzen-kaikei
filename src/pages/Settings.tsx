@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import curaCharacter from "@/assets/cura-character.png";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -43,7 +44,14 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Floating character */}
+      <img 
+        src={curaCharacter} 
+        alt="Cura" 
+        className="fixed bottom-4 right-4 w-24 h-24 md:w-32 md:h-32 animate-bounce-soft z-50 pointer-events-none"
+      />
+      
       <header className="border-b bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">

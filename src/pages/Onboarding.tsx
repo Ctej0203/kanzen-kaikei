@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import curaCharacter from "@/assets/cura-character.png";
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -57,7 +58,14 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative">
+      {/* Floating character */}
+      <img 
+        src={curaCharacter} 
+        alt="Cura" 
+        className="fixed bottom-4 right-4 w-24 h-24 md:w-32 md:h-32 animate-bounce-soft z-50 pointer-events-none"
+      />
+      
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle>初期設定</CardTitle>
