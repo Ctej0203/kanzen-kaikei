@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Play, Pause, RotateCcw } from "lucide-react";
+import curaCharacter from "@/assets/cura-character.png";
 
 type Phase = "inhale" | "hold" | "exhale" | "rest";
 
@@ -80,6 +81,13 @@ export const BreathingGuide = () => {
     <Card className="w-full shadow-lg hover:shadow-xl transition-shadow gradient-card border-2 border-primary/10">
       <CardContent className="pt-6">
         <div className="space-y-6">
+          <div className="flex items-center justify-center mb-4">
+            <img 
+              src={curaCharacter} 
+              alt="Cura" 
+              className="w-20 h-20 animate-bounce-soft"
+            />
+          </div>
           <div className="text-center space-y-2">
             <div className="text-sm text-muted-foreground font-medium">
               セット {currentSet} / {TOTAL_SETS}
