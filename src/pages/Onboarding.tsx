@@ -58,14 +58,7 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4 relative">
-      {/* Floating character */}
-      <img 
-        src={curaCharacter} 
-        alt="Cura" 
-        className="fixed bottom-4 right-4 w-24 h-24 md:w-32 md:h-32 animate-bounce-soft z-50 pointer-events-none"
-      />
-      
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle>初期設定</CardTitle>

@@ -73,14 +73,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background p-4 relative">
-      {/* Floating character */}
-      <img 
-        src={curaCharacter} 
-        alt="Cura" 
-        className="fixed bottom-4 right-4 w-24 h-24 md:w-32 md:h-32 animate-bounce-soft z-50 pointer-events-none"
-      />
-      
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background p-4">
       <Card className="w-full max-w-md shadow-xl hover:shadow-2xl transition-shadow border-2 border-primary/20">
         <CardHeader className="text-center">
           <CardTitle className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
