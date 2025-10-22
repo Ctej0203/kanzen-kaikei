@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, RefreshCw } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Heart, RefreshCw, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 interface Message {
@@ -12,7 +12,7 @@ interface Message {
   category: string;
 }
 
-export const HomehomeCard = () => {
+const HomehomeMessages = () => {
   const navigate = useNavigate();
   const [currentMessage, setCurrentMessage] = useState<Message | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -106,54 +106,66 @@ export const HomehomeCard = () => {
   }, []);
 
   return (
-    <Card 
-      className="w-full gradient-calm shadow-lg hover:shadow-xl transition-all hover-lift border-2 border-primary/20 cursor-pointer"
-      onClick={() => navigate("/homehome")}
-    >
-      <CardContent className="pt-6">
-        <div className="space-y-4">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
-              <span className="text-3xl animate-wiggle">💖</span>
-              今日のほめほめ
-              <span className="text-3xl animate-wiggle">💖</span>
-            </h3>
-            {currentMessage && (
-              <p className="text-2xl font-bold leading-relaxed text-white drop-shadow-lg">
-                {currentMessage.message}
-              </p>
-            )}
-          </div>
-          
-          <div className="flex gap-3 justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background">
+      <header className="border-b bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center gap-4">
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleFavorite();
-              }}
-              disabled={!currentMessage}
-              className="hover-lift shadow-md hover:shadow-lg transition-all bg-white/80 backdrop-blur-sm border-2"
+              onClick={() => navigate("/")}
+              className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all"
             >
-              <Heart
-                className={`h-6 w-6 transition-all ${isFavorite ? "fill-current text-destructive scale-110" : ""}`}
-              />
+              <ArrowLeft className="h-5 w-5" />
             </Button>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                fetchRandomMessage();
-              }}
-              disabled={loading}
-              className="shadow-lg hover:shadow-xl transition-all hover-lift font-bold bg-white/90 text-primary hover:bg-white"
-            >
-              <RefreshCw className={`mr-2 h-5 w-5 ${loading ? "animate-spin" : ""}`} />
-              次のメッセージ
-            </Button>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              💖 今日のほめほめ
+            </h1>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </header>
+
+      <main className="container mx-auto px-4 py-8 max-w-2xl">
+        <Card className="w-full gradient-calm shadow-xl hover:shadow-2xl transition-all border-2 border-primary/20">
+          <CardContent className="pt-8 pb-8">
+            <div className="space-y-6">
+              <div className="text-center min-h-[200px] flex flex-col justify-center">
+                {currentMessage && (
+                  <p className="text-3xl md:text-4xl font-bold leading-relaxed text-white drop-shadow-lg px-4">
+                    {currentMessage.message}
+                  </p>
+                )}
+              </div>
+              
+              <div className="flex gap-4 justify-center">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={toggleFavorite}
+                  disabled={!currentMessage}
+                  className="hover-lift shadow-md hover:shadow-lg transition-all bg-white/80 backdrop-blur-sm border-2"
+                >
+                  <Heart
+                    className={`h-6 w-6 mr-2 transition-all ${isFavorite ? "fill-current text-destructive scale-110" : ""}`}
+                  />
+                  お気に入り
+                </Button>
+                <Button
+                  size="lg"
+                  onClick={fetchRandomMessage}
+                  disabled={loading}
+                  className="shadow-lg hover:shadow-xl transition-all hover-lift font-bold bg-white/90 text-primary hover:bg-white"
+                >
+                  <RefreshCw className={`mr-2 h-5 w-5 ${loading ? "animate-spin" : ""}`} />
+                  次のメッセージ
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </main>
+    </div>
   );
 };
+
+export default HomehomeMessages;

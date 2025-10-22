@@ -8,6 +8,7 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import Records from "./pages/Records";
 import Settings from "./pages/Settings";
+import HomehomeMessages from "./pages/HomehomeMessages";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/records" element={<Records />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/homehome" element={<HomehomeMessages />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
