@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, RefreshCw, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import curaCharacter from "@/assets/cura-character.png";
 
 interface Message {
   id: string;
@@ -126,43 +127,60 @@ const HomehomeMessages = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-2xl">
-        <Card className="w-full gradient-calm shadow-xl hover:shadow-2xl transition-all border-2 border-primary/20">
-          <CardContent className="pt-8 pb-8">
-            <div className="space-y-6">
-              <div className="text-center min-h-[200px] flex flex-col justify-center">
-                {currentMessage && (
-                  <p className="text-3xl md:text-4xl font-bold leading-relaxed text-white drop-shadow-lg px-4">
-                    {currentMessage.message}
-                  </p>
-                )}
-              </div>
-              
-              <div className="flex gap-4 justify-center">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={toggleFavorite}
-                  disabled={!currentMessage}
-                  className="hover-lift shadow-md hover:shadow-lg transition-all bg-white/80 backdrop-blur-sm border-2"
-                >
-                  <Heart
-                    className={`h-6 w-6 mr-2 transition-all ${isFavorite ? "fill-current text-destructive scale-110" : ""}`}
-                  />
-                  お気に入り
-                </Button>
-                <Button
-                  size="lg"
-                  onClick={fetchRandomMessage}
-                  disabled={loading}
-                  className="shadow-lg hover:shadow-xl transition-all hover-lift font-bold bg-white/90 text-primary hover:bg-white"
-                >
-                  <RefreshCw className={`mr-2 h-5 w-5 ${loading ? "animate-spin" : ""}`} />
-                  次のメッセージ
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="space-y-6">
+          {/* キャラクター表示 */}
+          <div className="flex justify-center">
+            <img 
+              src={curaCharacter} 
+              alt="Cura" 
+              className="w-32 h-32 md:w-40 md:h-40 animate-bounce-soft"
+            />
+          </div>
+
+          {/* 吹き出し風メッセージカード */}
+          <div className="relative">
+            {/* 吹き出しの三角形 */}
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[20px] border-b-primary/20"></div>
+            
+            <Card className="w-full gradient-calm shadow-xl hover:shadow-2xl transition-all border-2 border-primary/20">
+              <CardContent className="pt-8 pb-8">
+                <div className="space-y-6">
+                  <div className="text-center min-h-[200px] flex flex-col justify-center">
+                    {currentMessage && (
+                      <p className="text-3xl md:text-4xl font-bold leading-relaxed text-white drop-shadow-lg px-4">
+                        {currentMessage.message}
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="flex gap-4 justify-center">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      onClick={toggleFavorite}
+                      disabled={!currentMessage}
+                      className="hover-lift shadow-md hover:shadow-lg transition-all bg-white/80 backdrop-blur-sm border-2"
+                    >
+                      <Heart
+                        className={`h-6 w-6 mr-2 transition-all ${isFavorite ? "fill-current text-destructive scale-110" : ""}`}
+                      />
+                      お気に入り
+                    </Button>
+                    <Button
+                      size="lg"
+                      onClick={fetchRandomMessage}
+                      disabled={loading}
+                      className="shadow-lg hover:shadow-xl transition-all hover-lift font-bold bg-white/90 text-primary hover:bg-white"
+                    >
+                      <RefreshCw className={`mr-2 h-5 w-5 ${loading ? "animate-spin" : ""}`} />
+                      次のメッセージ
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </main>
     </div>
   );
