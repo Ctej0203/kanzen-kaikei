@@ -18,19 +18,42 @@ export const MoodLogger = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("ログインが必要です");
 
+      let aiScore = null;
+      let aiComment = null;
+
+      // AI分析を実行（メモがある場合のみ）
+      if (memo && memo.trim()) {
+        try {
+          const { data: functionData, error: functionError } = await supabase.functions.invoke('analyze-diary', {
+            body: { memo }
+          });
+          
+          if (functionError) {
+            console.error("AI分析エラー:", functionError);
+          } else if (functionData) {
+            aiScore = functionData.score;
+            aiComment = functionData.comment;
+          }
+        } catch (aiError) {
+          console.error("AI分析呼び出しエラー:", aiError);
+        }
+      }
+
       const { error } = await supabase
         .from("symptom_records")
         .insert({
           user_id: user.id,
           mood_score: moodScore[0],
           memo: memo || null,
+          ai_score: aiScore,
+          ai_comment: aiComment,
         });
 
       if (error) throw error;
 
       toast({
         title: "記録しました",
-        description: "今日の調子を記録しました",
+        description: aiScore ? `メンタルスコア: ${aiScore}点` : "今日の調子を記録しました",
       });
       
       setMoodScore([5]);
@@ -49,13 +72,13 @@ export const MoodLogger = () => {
   return (
     <Card className="w-full shadow-lg hover:shadow-xl transition-all hover-lift gradient-card border-2 border-accent/20">
       <CardHeader>
-        <CardTitle className="text-xl font-bold">📝 記録する</CardTitle>
+        <CardTitle className="text-xl font-bold">今日の気持ちを記録しよう</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-3">
           <div className="flex justify-between text-sm font-medium">
-            <span className="text-lg">調子: {moodScore[0]}</span>
-            <span className="text-muted-foreground">0: とても悪い - 10: とても良い</span>
+            <span className="text-lg">今日の調子: {moodScore[0]}</span>
+            <span className="text-muted-foreground">😢 0 - 10 😊</span>
           </div>
           <Slider
             value={moodScore}
@@ -68,11 +91,12 @@ export const MoodLogger = () => {
         </div>
 
         <div className="space-y-2">
+          <label className="text-sm font-medium">今日の日記（AIが分析します）</label>
           <Textarea
-            placeholder="メモ（任意）"
+            placeholder="今日はどんな1日でしたか？嬉しかったこと、辛かったこと、何でも書いてみてね..."
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
-            rows={3}
+            rows={5}
             className="resize-none border-2"
           />
         </div>

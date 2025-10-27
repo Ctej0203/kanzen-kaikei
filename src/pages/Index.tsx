@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { BreathingGuide } from "@/components/BreathingGuide";
 import { HomehomeCard } from "@/components/HomehomeCard";
 import { MoodLogger } from "@/components/MoodLogger";
+import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
 import { LogOut, Settings, FileText } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import curaCharacter from "@/assets/cura-character.png";
@@ -114,9 +115,13 @@ const Index = () => {
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         <div className="space-y-8">
           <section className="hover-lift">
+            <MentalScoreDisplay />
+          </section>
+
+          <section className="hover-lift">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <span className="text-3xl">💝</span>
-              今日の調子
+              <span className="text-3xl">📝</span>
+              今日の日記
             </h2>
             <MoodLogger />
           </section>

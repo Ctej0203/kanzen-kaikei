@@ -105,6 +105,8 @@ export type Database = {
       }
       symptom_records: {
         Row: {
+          ai_comment: string | null
+          ai_score: number | null
           created_at: string
           id: string
           memo: string | null
@@ -114,6 +116,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          ai_comment?: string | null
+          ai_score?: number | null
           created_at?: string
           id?: string
           memo?: string | null
@@ -123,6 +127,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+          ai_comment?: string | null
+          ai_score?: number | null
           created_at?: string
           id?: string
           memo?: string | null
