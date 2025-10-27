@@ -7,7 +7,7 @@ import { BreathingGuide } from "@/components/BreathingGuide";
 import { HomehomeCard } from "@/components/HomehomeCard";
 import { MoodLogger } from "@/components/MoodLogger";
 import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
-import { LogOut, Settings, FileText } from "lucide-react";
+import { LogOut, Settings, FileText, Heart } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import curaCharacter from "@/assets/cura-character.png";
 
@@ -83,6 +83,15 @@ const Index = () => {
               ✨ Curely
             </h1>
             <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/mental-record")}
+                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all"
+                title="こころの記録"
+              >
+                <Heart className="h-5 w-5" />
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"

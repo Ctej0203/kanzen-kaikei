@@ -64,6 +64,51 @@ export type Database = {
         }
         Relationships: []
       }
+      mental_health_records: {
+        Row: {
+          created_at: string
+          diagnosis_name: string | null
+          doctor_appointment: string | null
+          id: string
+          medication_evening: string | null
+          medication_morning: string | null
+          medication_noon: string | null
+          medication_notes: string | null
+          notes: string | null
+          symptom_severity: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          diagnosis_name?: string | null
+          doctor_appointment?: string | null
+          id?: string
+          medication_evening?: string | null
+          medication_morning?: string | null
+          medication_noon?: string | null
+          medication_notes?: string | null
+          notes?: string | null
+          symptom_severity?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          diagnosis_name?: string | null
+          doctor_appointment?: string | null
+          id?: string
+          medication_evening?: string | null
+          medication_morning?: string | null
+          medication_noon?: string | null
+          medication_notes?: string | null
+          notes?: string | null
+          symptom_severity?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age: number | null

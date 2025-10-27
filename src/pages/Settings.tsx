@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import curaCharacter from "@/assets/cura-character.png";
+import { EmergencyContacts } from "@/components/EmergencyContacts";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -57,6 +57,8 @@ const Settings = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-2xl space-y-6">
+        <EmergencyContacts />
+        
         <Card>
           <CardHeader>
             <CardTitle>データのエクスポート</CardTitle>
@@ -69,34 +71,6 @@ const Settings = () => {
               <Download className="mr-2 h-4 w-4" />
               データをダウンロード
             </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>利用規約・免責事項</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm space-y-2">
-            <p>
-              本アプリは、パニック障害のセルフマネジメントを支援するツールです。
-            </p>
-            <p>
-              医療行為や診断を目的としたものではありません。症状が続く場合は、
-              必ず医療機関を受診してください。
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>緊急時の連絡先</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm space-y-2">
-            <p>緊急時は以下の窓口にご相談ください：</p>
-            <ul className="list-disc list-inside space-y-1">
-              <li>こころの健康相談統一ダイヤル: 0570-064-556</li>
-              <li>よりそいホットライン: 0120-279-338</li>
-            </ul>
           </CardContent>
         </Card>
 
