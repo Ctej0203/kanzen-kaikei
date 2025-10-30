@@ -14,6 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_conversations: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          response: string
+          tokens_used: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          response: string
+          tokens_used?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          response?: string
+          tokens_used?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_quota: {
+        Row: {
+          free_messages_used: number | null
+          reset_at: string | null
+          user_id: string
+        }
+        Insert: {
+          free_messages_used?: number | null
+          reset_at?: string | null
+          user_id: string
+        }
+        Update: {
+          free_messages_used?: number | null
+          reset_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      coin_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          source: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          source: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          source?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       favorite_messages: {
         Row: {
           created_at: string
@@ -43,6 +118,59 @@ export type Database = {
           },
         ]
       }
+      gacha_history: {
+        Row: {
+          cost: number
+          created_at: string | null
+          id: string
+          item_id: string
+          roll_number: number
+          user_id: string
+        }
+        Insert: {
+          cost: number
+          created_at?: string | null
+          id?: string
+          item_id: string
+          roll_number: number
+          user_id: string
+        }
+        Update: {
+          cost?: number
+          created_at?: string | null
+          id?: string
+          item_id?: string
+          roll_number?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gacha_history_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gacha_pity: {
+        Row: {
+          current_count: number | null
+          last_ssr_at: string | null
+          user_id: string
+        }
+        Insert: {
+          current_count?: number | null
+          last_ssr_at?: string | null
+          user_id: string
+        }
+        Update: {
+          current_count?: number | null
+          last_ssr_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       homehome_messages: {
         Row: {
           category: string | null
@@ -61,6 +189,39 @@ export type Database = {
           created_at?: string
           id?: string
           message?: string
+        }
+        Relationships: []
+      }
+      items: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string
+          is_default: boolean | null
+          name: string
+          rarity: string
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url: string
+          is_default?: boolean | null
+          name: string
+          rarity: string
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string
+          is_default?: boolean | null
+          name?: string
+          rarity?: string
         }
         Relationships: []
       }
@@ -112,8 +273,10 @@ export type Database = {
       profiles: {
         Row: {
           age: number | null
+          condition_types: string[] | null
           created_at: string
           currently_treating: boolean | null
+          customization_preferences: Json | null
           diagnosed: boolean | null
           diagnosis_year: number | null
           id: string
@@ -124,8 +287,10 @@ export type Database = {
         }
         Insert: {
           age?: number | null
+          condition_types?: string[] | null
           created_at?: string
           currently_treating?: boolean | null
+          customization_preferences?: Json | null
           diagnosed?: boolean | null
           diagnosis_year?: number | null
           id?: string
@@ -136,14 +301,52 @@ export type Database = {
         }
         Update: {
           age?: number | null
+          condition_types?: string[] | null
           created_at?: string
           currently_treating?: boolean | null
+          customization_preferences?: Json | null
           diagnosed?: boolean | null
           diagnosis_year?: number | null
           id?: string
           onboarding_completed?: boolean | null
           triggers?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          plan: string
+          status: string
+          stripe_subscription_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan: string
+          status: string
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan?: string
+          status?: string
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -184,12 +387,81 @@ export type Database = {
         }
         Relationships: []
       }
+      user_currency: {
+        Row: {
+          free_coins: number | null
+          paid_coins: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          free_coins?: number | null
+          paid_coins?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          free_coins?: number | null
+          paid_coins?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_items: {
+        Row: {
+          id: string
+          is_equipped: boolean | null
+          item_id: string
+          obtained_at: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          is_equipped?: boolean | null
+          item_id: string
+          obtained_at?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          is_equipped?: boolean | null
+          item_id?: string
+          obtained_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_items_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      add_coins: {
+        Args: { p_amount: number; p_source: string; p_user_id: string }
+        Returns: undefined
+      }
+      increment_ai_quota: { Args: { p_user_id: string }; Returns: undefined }
+      perform_gacha: {
+        Args: { p_roll_count: number; p_user_id: string }
+        Returns: {
+          is_new: boolean
+          item_id: string
+          rarity: string
+        }[]
+      }
+      spend_coins: {
+        Args: { p_amount: number; p_source: string; p_user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

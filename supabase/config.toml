@@ -1,1 +1,7 @@
 project_id = "rvxmxhrpgkxkjayyslns"
+
+[functions.analyze-diary]
+verify_jwt = true
+
+[functions.ai-chat]
+verify_jwt = true
