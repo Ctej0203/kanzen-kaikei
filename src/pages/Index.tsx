@@ -9,6 +9,7 @@ import { MoodLogger } from "@/components/MoodLogger";
 import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
 import { LogOut, Settings, FileText, Heart } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { CoinBalance } from "@/components/CoinBalance";
 import curaCharacter from "@/assets/cura-character.png";
 
 const Index = () => {
@@ -82,7 +83,8 @@ const Index = () => {
             <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-wiggle">
               ✨ Curely
             </h1>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
+              <CoinBalance />
               <Button
                 variant="ghost"
                 size="icon"
