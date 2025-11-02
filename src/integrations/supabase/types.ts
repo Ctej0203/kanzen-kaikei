@@ -342,6 +342,33 @@ export type Database = {
         }
         Relationships: []
       }
+      record_streaks: {
+        Row: {
+          created_at: string | null
+          current_streak: number
+          last_record_date: string
+          record_history: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_streak?: number
+          last_record_date: string
+          record_history?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          current_streak?: number
+          last_record_date?: string
+          record_history?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           created_at: string | null

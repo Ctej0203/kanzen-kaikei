@@ -12,6 +12,7 @@ import { toast } from "@/hooks/use-toast";
 import { CoinBalance } from "@/components/CoinBalance";
 import { LoginBonusPopup } from "@/components/LoginBonusPopup";
 import { LoginCalendar } from "@/components/LoginCalendar";
+import { RecordCalendar } from "@/components/RecordCalendar";
 import { useLoginBonus } from "@/hooks/useLoginBonus";
 import curaCharacter from "@/assets/cura-character.png";
 
@@ -156,6 +157,10 @@ const Index = () => {
         <div className="space-y-8">
           <section className="hover-lift">
             <LoginCalendar />
+          </section>
+
+          <section className="hover-lift">
+            <RecordCalendar />
           </section>
 
           <section className="hover-lift">

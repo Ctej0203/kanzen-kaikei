@@ -6,11 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useRecordStreak } from "@/hooks/useRecordStreak";
 
 export const MoodLogger = () => {
   const [moodScore, setMoodScore] = useState([5]);
   const [memo, setMemo] = useState("");
   const [loading, setLoading] = useState(false);
+  const { refetch: refetchStreak } = useRecordStreak();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -50,6 +52,9 @@ export const MoodLogger = () => {
         });
 
       if (error) throw error;
+
+      // ストリークデータを更新
+      await refetchStreak();
 
       toast({
         title: "記録しました",
