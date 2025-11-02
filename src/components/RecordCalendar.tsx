@@ -26,7 +26,7 @@ export const RecordCalendar = () => {
     <Card className="w-full shadow-lg hover:shadow-xl transition-all hover-lift gradient-card border-2 border-accent/20">
       <CardHeader>
         <CardTitle className="text-xl font-bold flex items-center gap-2">
-          <span style={{ color: '#FF6699' }}>
+          <span className="text-foreground">
             📝 {streak?.current_streak || 0}日連続記録中！
           </span>
         </CardTitle>
