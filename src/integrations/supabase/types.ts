@@ -225,6 +225,33 @@ export type Database = {
         }
         Relationships: []
       }
+      login_streaks: {
+        Row: {
+          created_at: string | null
+          current_streak: number
+          last_login_date: string
+          login_history: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_streak?: number
+          last_login_date: string
+          login_history?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          current_streak?: number
+          last_login_date?: string
+          login_history?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       mental_health_records: {
         Row: {
           created_at: string
@@ -448,6 +475,14 @@ export type Database = {
       add_coins: {
         Args: { p_amount: number; p_source: string; p_user_id: string }
         Returns: undefined
+      }
+      claim_daily_login_bonus: {
+        Args: { p_user_id: string }
+        Returns: {
+          coins_earned: number
+          current_streak: number
+          is_new_day: boolean
+        }[]
       }
       increment_ai_quota: { Args: { p_user_id: string }; Returns: undefined }
       perform_gacha: {

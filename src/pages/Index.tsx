@@ -10,6 +10,9 @@ import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
 import { LogOut, Settings, FileText, Heart } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { CoinBalance } from "@/components/CoinBalance";
+import { LoginBonusPopup } from "@/components/LoginBonusPopup";
+import { LoginCalendar } from "@/components/LoginCalendar";
+import { useLoginBonus } from "@/hooks/useLoginBonus";
 import curaCharacter from "@/assets/cura-character.png";
 
 const Index = () => {
@@ -17,6 +20,11 @@ const Index = () => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [bonusData, setBonusData] = useState<{
+    coins: number;
+    streak: number;
+  } | null>(null);
+  const { claimBonus } = useLoginBonus();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -39,6 +47,19 @@ const Index = () => {
 
       if (profileData && !profileData.onboarding_completed) {
         navigate("/onboarding");
+      } else {
+        // ログインボーナスをチェック
+        try {
+          const result = await claimBonus.mutateAsync();
+          if (result.is_new_day && result.coins_earned > 0) {
+            setBonusData({
+              coins: result.coins_earned,
+              streak: result.current_streak,
+            });
+          }
+        } catch (error) {
+          console.error("Login bonus error:", error);
+        }
       }
 
       setLoading(false);
@@ -77,6 +98,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background">
+      {bonusData && (
+        <LoginBonusPopup
+          coinsEarned={bonusData.coins}
+          streak={bonusData.streak}
+          onClose={() => setBonusData(null)}
+        />
+      )}
+
       <header className="border-b bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -125,6 +154,10 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         <div className="space-y-8">
+          <section className="hover-lift">
+            <LoginCalendar />
+          </section>
+
           <section className="hover-lift">
             <MentalScoreDisplay />
           </section>
