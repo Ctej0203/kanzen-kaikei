@@ -44,35 +44,58 @@ export const LoginCalendar = () => {
               <div className="text-xs font-bold text-foreground">
                 {format(date, "d")}
               </div>
-              <div className="w-8 h-8 flex items-center justify-center">
+              <div className="w-10 h-10 flex items-center justify-center">
                 {hasLogin ? (
                   <svg
                     viewBox="0 0 100 100"
-                    className="w-full h-full animate-scale-in"
+                    className="w-full h-full animate-bounce-in"
                   >
-                    {/* Curaちゃんの顔スタンプ（濃いピンクの縁取り） */}
+                    {/* Curaちゃんの顔スタンプ（濃いピンクの縁取りのみ） */}
+                    {/* 耳（左） */}
+                    <ellipse
+                      cx="30"
+                      cy="25"
+                      rx="12"
+                      ry="18"
+                      fill="none"
+                      stroke="#FF66AA"
+                      strokeWidth="3"
+                    />
+                    {/* 耳（右） */}
+                    <ellipse
+                      cx="70"
+                      cy="25"
+                      rx="12"
+                      ry="18"
+                      fill="none"
+                      stroke="#FF66AA"
+                      strokeWidth="3"
+                    />
+                    {/* 顔の輪郭 */}
                     <circle
                       cx="50"
-                      cy="50"
-                      r="35"
+                      cy="55"
+                      r="28"
                       fill="none"
-                      stroke="#ec4899"
-                      strokeWidth="4"
+                      stroke="#FF66AA"
+                      strokeWidth="3"
                     />
-                    {/* 目 */}
-                    <circle cx="38" cy="45" r="4" fill="#ec4899" />
-                    <circle cx="62" cy="45" r="4" fill="#ec4899" />
+                    {/* 目（左） */}
+                    <circle cx="40" cy="50" r="3" fill="#FF66AA" />
+                    {/* 目（右） */}
+                    <circle cx="60" cy="50" r="3" fill="#FF66AA" />
                     {/* 笑顔の口 */}
                     <path
-                      d="M 35 55 Q 50 65 65 55"
+                      d="M 38 60 Q 50 68 62 60"
                       fill="none"
-                      stroke="#ec4899"
-                      strokeWidth="3"
+                      stroke="#FF66AA"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                     />
-                    {/* 頬の赤み */}
-                    <circle cx="28" cy="55" r="5" fill="#fda4af" opacity="0.5" />
-                    <circle cx="72" cy="55" r="5" fill="#fda4af" opacity="0.5" />
+                    {/* 頬の赤み（左） */}
+                    <circle cx="32" cy="58" r="4" fill="none" stroke="#FF66AA" strokeWidth="1.5" />
+                    {/* 頬の赤み（右） */}
+                    <circle cx="68" cy="58" r="4" fill="none" stroke="#FF66AA" strokeWidth="1.5" />
                   </svg>
                 ) : (
                   <div className="w-2 h-2 rounded-full bg-muted/50"></div>
