@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRecordStreak } from "@/hooks/useRecordStreak";
 import { format, subDays } from "date-fns";
 import { ja } from "date-fns/locale";
+import curaStamp from "@/assets/cura-stamp.png";
 
 export const RecordCalendar = () => {
   const { streak } = useRecordStreak();
@@ -54,57 +55,11 @@ export const RecordCalendar = () => {
                   <div 
                     className="absolute inset-0 flex items-center justify-center"
                   >
-                    <svg
-                      viewBox="0 0 100 100"
-                      className="w-10 h-10 animate-bounce-in"
-                    >
-                      {/* Curaちゃんの顔スタンプ（濃いピンクの縁取りのみ） */}
-                      {/* 耳（左） */}
-                      <ellipse
-                        cx="30"
-                        cy="25"
-                        rx="12"
-                        ry="18"
-                        fill="none"
-                        stroke="#FF66AA"
-                        strokeWidth="3"
-                      />
-                      {/* 耳（右） */}
-                      <ellipse
-                        cx="70"
-                        cy="25"
-                        rx="12"
-                        ry="18"
-                        fill="none"
-                        stroke="#FF66AA"
-                        strokeWidth="3"
-                      />
-                      {/* 顔の輪郭 */}
-                      <circle
-                        cx="50"
-                        cy="55"
-                        r="28"
-                        fill="none"
-                        stroke="#FF66AA"
-                        strokeWidth="3"
-                      />
-                      {/* 目（左） */}
-                      <circle cx="40" cy="50" r="3" fill="#FF66AA" />
-                      {/* 目（右） */}
-                      <circle cx="60" cy="50" r="3" fill="#FF66AA" />
-                      {/* 笑顔の口 */}
-                      <path
-                        d="M 38 60 Q 50 68 62 60"
-                        fill="none"
-                        stroke="#FF66AA"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                      />
-                      {/* 頬の赤み（左） */}
-                      <circle cx="32" cy="58" r="4" fill="none" stroke="#FF66AA" strokeWidth="1.5" />
-                      {/* 頬の赤み（右） */}
-                      <circle cx="68" cy="58" r="4" fill="none" stroke="#FF66AA" strokeWidth="1.5" />
-                    </svg>
+                    <img
+                      src={curaStamp}
+                      alt="Cura stamp"
+                      className="w-16 h-16 animate-bounce-in"
+                    />
                   </div>
                 )}
               </div>
