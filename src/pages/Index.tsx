@@ -13,6 +13,7 @@ import { CoinBalance } from "@/components/CoinBalance";
 import { LoginBonusPopup } from "@/components/LoginBonusPopup";
 import { LoginCalendar } from "@/components/LoginCalendar";
 import { RecordCalendar } from "@/components/RecordCalendar";
+import { CalendarRibbon } from "@/components/CalendarRibbon";
 import { useLoginBonus } from "@/hooks/useLoginBonus";
 import { useCharacter } from "@/hooks/useCharacter";
 
@@ -25,6 +26,9 @@ const Index = () => {
     coins: number;
     streak: number;
   } | null>(null);
+  const [showLoginCalendar, setShowLoginCalendar] = useState(false);
+  const [showRecordCalendar, setShowRecordCalendar] = useState(false);
+  const [shouldShowLoginCalendar, setShouldShowLoginCalendar] = useState(false);
   const { claimBonus } = useLoginBonus();
   const { selectedCharacter } = useCharacter();
 
@@ -58,6 +62,7 @@ const Index = () => {
               coins: result.coins_earned,
               streak: result.current_streak,
             });
+            setShouldShowLoginCalendar(true);
           }
         } catch (error) {
           console.error("Login bonus error:", error);
@@ -104,9 +109,22 @@ const Index = () => {
         <LoginBonusPopup
           coinsEarned={bonusData.coins}
           streak={bonusData.streak}
-          onClose={() => setBonusData(null)}
+          onClose={() => {
+            setBonusData(null);
+            if (shouldShowLoginCalendar) {
+              setShowLoginCalendar(true);
+              setShouldShowLoginCalendar(false);
+            }
+          }}
         />
       )}
+
+      <LoginCalendar open={showLoginCalendar} onOpenChange={setShowLoginCalendar} />
+      <RecordCalendar open={showRecordCalendar} onOpenChange={setShowRecordCalendar} />
+      <CalendarRibbon 
+        onLoginCalendarClick={() => setShowLoginCalendar(true)}
+        onRecordCalendarClick={() => setShowRecordCalendar(true)}
+      />
 
       <header className="border-b bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
@@ -163,16 +181,8 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-2xl">
+      <main className="container mx-auto px-4 py-8 max-w-2xl pb-24">
         <div className="space-y-8">
-          <section className="hover-lift">
-            <LoginCalendar />
-          </section>
-
-          <section className="hover-lift">
-            <RecordCalendar />
-          </section>
-
           <section className="hover-lift">
             <MentalScoreDisplay />
           </section>

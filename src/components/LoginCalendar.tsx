@@ -1,10 +1,15 @@
 import { useLoginBonus } from "@/hooks/useLoginBonus";
-import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { format, subDays, parseISO } from "date-fns";
 import { ja } from "date-fns/locale";
 import curaStamp from "@/assets/cura-stamp.png";
 
-export const LoginCalendar = () => {
+interface LoginCalendarProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export const LoginCalendar = ({ open, onOpenChange }: LoginCalendarProps) => {
   const { streak } = useLoginBonus();
 
   const last7Days = Array.from({ length: 7 }, (_, i) => {
@@ -24,49 +29,53 @@ export const LoginCalendar = () => {
   );
 
   return (
-    <Card className="p-4 bg-card/80 backdrop-blur-sm border-border/50 hover-lift">
-      <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-        <span className="text-2xl">📅</span>
-        ログインカレンダー
-      </h3>
-      <div className="grid grid-cols-7 gap-2">
-        {last7Days.map((dateStr) => {
-          const date = parseISO(dateStr);
-          const hasLogin = loginDates.has(dateStr);
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-md bg-gradient-to-br from-card/95 via-secondary/30 to-card/95 backdrop-blur-sm border-2 border-primary/20">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold flex items-center justify-center gap-2">
+            <span className="text-3xl">📅</span>
+            ログインカレンダー
+          </DialogTitle>
+        </DialogHeader>
+        <div className="grid grid-cols-7 gap-3 p-4">
+          {last7Days.map((dateStr) => {
+            const date = parseISO(dateStr);
+            const hasLogin = loginDates.has(dateStr);
 
-          return (
-            <div
-              key={dateStr}
-              className="flex flex-col items-center gap-1 p-2 rounded-lg bg-secondary/30"
-            >
-              <div className="text-xs text-muted-foreground font-medium">
-                {format(date, "EEE", { locale: ja })}
+            return (
+              <div
+                key={dateStr}
+                className="flex flex-col items-center gap-2 p-3 rounded-xl bg-secondary/30"
+              >
+                <div className="text-sm text-muted-foreground font-medium">
+                  {format(date, "EEE", { locale: ja })}
+                </div>
+                <div className="text-sm font-bold text-foreground">
+                  {format(date, "d")}
+                </div>
+                <div className="w-16 h-16 flex items-center justify-center">
+                  {hasLogin ? (
+                    <img
+                      src={curaStamp}
+                      alt="Cura stamp"
+                      className="w-20 h-20 animate-bounce-in"
+                    />
+                  ) : (
+                    <div className="w-3 h-3 rounded-full bg-muted/50"></div>
+                  )}
+                </div>
               </div>
-              <div className="text-xs font-bold text-foreground">
-                {format(date, "d")}
-              </div>
-              <div className="w-10 h-10 flex items-center justify-center">
-                {hasLogin ? (
-                  <img
-                    src={curaStamp}
-                    alt="Cura stamp"
-                    className="w-16 h-16 animate-bounce-in"
-                  />
-                ) : (
-                  <div className="w-2 h-2 rounded-full bg-muted/50"></div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      {streak && (
-        <div className="mt-3 text-center">
-          <p className="text-sm text-muted-foreground">
-            現在 <span className="font-bold text-primary">{streak.current_streak}</span> 日連続！
-          </p>
+            );
+          })}
         </div>
-      )}
-    </Card>
+        {streak && (
+          <div className="mt-2 text-center pb-4">
+            <p className="text-lg font-bold text-primary">
+              🎉 {streak.current_streak}日連続ログイン！
+            </p>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };

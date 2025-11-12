@@ -7,11 +7,17 @@ import { Slider } from "@/components/ui/slider";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useRecordStreak } from "@/hooks/useRecordStreak";
+import { RecordCalendar } from "./RecordCalendar";
 
-export const MoodLogger = () => {
+interface MoodLoggerProps {
+  onRecordSuccess?: () => void;
+}
+
+export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
   const [moodScore, setMoodScore] = useState([5]);
   const [memo, setMemo] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
   const { refetch: refetchStreak } = useRecordStreak();
 
   const handleSubmit = async () => {
@@ -63,6 +69,10 @@ export const MoodLogger = () => {
       
       setMoodScore([5]);
       setMemo("");
+      
+      // カレンダーポップアップを表示
+      setShowCalendar(true);
+      onRecordSuccess?.();
     } catch (error: any) {
       toast({
         title: "エラー",
@@ -75,46 +85,49 @@ export const MoodLogger = () => {
   };
 
   return (
-    <Card className="w-full shadow-lg hover:shadow-xl transition-all hover-lift gradient-card border-2 border-accent/20">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold">今日の気持ちを記録しよう</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-3">
-          <div className="flex justify-between text-sm font-medium">
-            <span className="text-lg">今日の調子: {moodScore[0]}</span>
-            <span className="text-muted-foreground">😢 0 - 10 😊</span>
+    <>
+      <Card className="w-full shadow-lg hover:shadow-xl transition-all hover-lift gradient-card border-2 border-accent/20">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold">今日の気持ちを記録しよう</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm font-medium">
+              <span className="text-lg">今日の調子: {moodScore[0]}</span>
+              <span className="text-muted-foreground">😢 0 - 10 😊</span>
+            </div>
+            <Slider
+              value={moodScore}
+              onValueChange={setMoodScore}
+              min={0}
+              max={10}
+              step={1}
+              className="w-full"
+            />
           </div>
-          <Slider
-            value={moodScore}
-            onValueChange={setMoodScore}
-            min={0}
-            max={10}
-            step={1}
-            className="w-full"
-          />
-        </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium">今日の日記（AIが分析します）</label>
-          <Textarea
-            placeholder="今日はどんな1日でしたか？嬉しかったこと、辛かったこと、何でも書いてみてね..."
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-            rows={5}
-            className="resize-none border-2"
-          />
-        </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">今日の日記（AIが分析します）</label>
+            <Textarea
+              placeholder="今日はどんな1日でしたか？嬉しかったこと、辛かったこと、何でも書いてみてね..."
+              value={memo}
+              onChange={(e) => setMemo(e.target.value)}
+              rows={5}
+              className="resize-none border-2"
+            />
+          </div>
 
-        <Button 
-          onClick={handleSubmit} 
-          disabled={loading}
-          className="w-full shadow-lg hover:shadow-xl transition-all hover-lift font-bold"
-        >
-          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          ✨ 記録する
-        </Button>
-      </CardContent>
-    </Card>
+          <Button 
+            onClick={handleSubmit} 
+            disabled={loading}
+            className="w-full shadow-lg hover:shadow-xl transition-all hover-lift font-bold"
+          >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            ✨ 記録する
+          </Button>
+        </CardContent>
+      </Card>
+      <RecordCalendar open={showCalendar} onOpenChange={setShowCalendar} />
+    </>
   );
 };
