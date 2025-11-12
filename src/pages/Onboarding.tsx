@@ -38,7 +38,7 @@ const characters: CharacterData[] = [
     id: "suu",
     name: "Suu",
     emoji: "🩵",
-    greeting: "Suuだよ🩵",
+    greeting: "やっほ〜！Suuだよ🩵",
     color: "hsl(180, 75%, 72%)",
     image: suuCharacter,
     description: "やさしくて、おっとりした性格",
