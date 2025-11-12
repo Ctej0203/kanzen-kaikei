@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import curaHappy from "@/assets/cura-happy.png";
-import curaGentle from "@/assets/cura-gentle.png";
-import curaCharacter from "@/assets/cura-character.png";
+import { useCharacter } from "@/hooks/useCharacter";
 
 export const MentalScoreDisplay = () => {
   const [latestScore, setLatestScore] = useState<number | null>(null);
   const [latestComment, setLatestComment] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const { selectedCharacter } = useCharacter();
 
   useEffect(() => {
     fetchLatestScore();
@@ -42,17 +41,14 @@ export const MentalScoreDisplay = () => {
   };
 
   const getCharacterImage = () => {
-    if (latestScore === null) return curaCharacter;
-    if (latestScore >= 70) return curaHappy;
-    if (latestScore >= 40) return curaGentle;
-    return curaCharacter;
+    return selectedCharacter.image;
   };
 
   const getScoreColor = () => {
-    if (latestScore === null) return "hsl(var(--muted))";
+    if (latestScore === null) return selectedCharacter.color;
     if (latestScore >= 70) return "hsl(var(--success))";
     if (latestScore >= 40) return "hsl(var(--accent))";
-    return "hsl(var(--primary))";
+    return selectedCharacter.color;
   };
 
   if (loading) {
@@ -73,7 +69,7 @@ export const MentalScoreDisplay = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex justify-center">
-            <img src={curaCharacter} alt="Cura" className="w-32 h-32 animate-bounce-soft" />
+            <img src={selectedCharacter.image} alt={selectedCharacter.name} className="w-32 h-32 animate-bounce-soft" />
           </div>
           <p className="text-center text-muted-foreground">
             日記を記録すると、AIがあなたの心の状態を分析してスコアを表示します✨
@@ -93,7 +89,7 @@ export const MentalScoreDisplay = () => {
         <div className="flex justify-center">
           <img 
             src={getCharacterImage()} 
-            alt="Cura" 
+            alt={selectedCharacter.name}
             className="w-32 h-32 animate-bounce-soft"
           />
         </div>

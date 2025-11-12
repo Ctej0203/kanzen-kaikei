@@ -5,10 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, RefreshCw, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import curaCharacter from "@/assets/cura-character.png";
-import curaHappy from "@/assets/cura-happy.png";
-import curaGentle from "@/assets/cura-gentle.png";
-import curaEnergetic from "@/assets/cura-energetic.png";
+import { useCharacter } from "@/hooks/useCharacter";
 
 interface Message {
   id: string;
@@ -21,12 +18,7 @@ const HomehomeMessages = () => {
   const [currentMessage, setCurrentMessage] = useState<Message | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [characterImage, setCharacterImage] = useState(curaCharacter);
-
-  const getCharacterImage = () => {
-    const expressions = [curaHappy, curaGentle, curaEnergetic];
-    return expressions[Math.floor(Math.random() * expressions.length)];
-  };
+  const { selectedCharacter } = useCharacter();
 
   const fetchRandomMessage = async () => {
     setLoading(true);
@@ -41,7 +33,6 @@ const HomehomeMessages = () => {
       if (data && data.length > 0) {
         const randomMessage = data[Math.floor(Math.random() * data.length)];
         setCurrentMessage(randomMessage);
-        setCharacterImage(getCharacterImage());
         await checkIfFavorite(randomMessage.id);
       }
     } catch (error: any) {
@@ -141,8 +132,8 @@ const HomehomeMessages = () => {
           {/* キャラクター表示 */}
           <div className="flex justify-center">
             <img 
-              src={characterImage} 
-              alt="Cura" 
+              src={selectedCharacter.image} 
+              alt={selectedCharacter.name}
               className="w-48 h-48 md:w-64 md:h-64 animate-bounce-soft"
             />
           </div>

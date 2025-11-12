@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Play, Pause, RotateCcw } from "lucide-react";
-import curaCharacter from "@/assets/cura-character.png";
+import { useCharacter } from "@/hooks/useCharacter";
 
 type Phase = "inhale" | "hold" | "exhale" | "rest";
 
@@ -29,6 +29,7 @@ export const BreathingGuide = () => {
   const [phase, setPhase] = useState<Phase>("inhale");
   const [seconds, setSeconds] = useState(0);
   const [progress, setProgress] = useState(0);
+  const { selectedCharacter } = useCharacter();
 
   const currentDuration = PHASE_DURATIONS[phase];
 
@@ -83,8 +84,8 @@ export const BreathingGuide = () => {
         <div className="space-y-6">
           <div className="flex items-center justify-center mb-4">
             <img 
-              src={curaCharacter} 
-              alt="Cura" 
+              src={selectedCharacter.image} 
+              alt={selectedCharacter.name}
               className="w-20 h-20 animate-bounce-soft"
             />
           </div>
