@@ -1,66 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import curaCharacter from "@/assets/cura-character.png";
-import suuCharacter from "@/assets/suu-character.png";
-import lunoCharacter from "@/assets/luno-character.png";
-
-type Character = "cura" | "suu" | "luno";
-
-interface CharacterData {
-  id: Character;
-  name: string;
-  emoji: string;
-  greeting: string;
-  color: string;
-  image: string;
-  description: string;
-}
-
-const characters: CharacterData[] = [
-  {
-    id: "cura",
-    name: "Cura",
-    emoji: "🩷",
-    greeting: "元気？Curaだよ🩷",
-    color: "hsl(320, 85%, 68%)",
-    image: curaCharacter,
-    description: "元気で前向き、励ましてくれるタイプ",
-  },
-  {
-    id: "suu",
-    name: "Suu",
-    emoji: "🩵",
-    greeting: "やっほ〜！Suuだよ🩵",
-    color: "hsl(180, 75%, 72%)",
-    image: suuCharacter,
-    description: "やさしくて、おっとりした性格",
-  },
-  {
-    id: "luno",
-    name: "Luno",
-    emoji: "💜",
-    greeting: "こんにちは、Lunoだよ🌙",
-    color: "hsl(280, 50%, 70%)",
-    image: lunoCharacter,
-    description: "静かで夢見るような雰囲気",
-  },
-];
+import { characters, CharacterId } from "@/lib/characterData";
+import { useCharacter } from "@/hooks/useCharacter";
 
 const CharacterSelect = () => {
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+  const [selectedCharacterId, setSelectedCharacterId] = useState<CharacterId | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
+  const { setSelectedCharacter } = useCharacter();
 
-  const handleCharacterSelect = (characterId: Character) => {
-    setSelectedCharacter(characterId);
+  const handleCharacterSelect = (characterId: CharacterId) => {
+    setSelectedCharacterId(characterId);
   };
 
-  const handleConfirm = () => {
-    if (selectedCharacter) {
+  const handleConfirm = async () => {
+    if (selectedCharacterId) {
       setShowConfirmation(true);
-      // Save to localStorage
-      localStorage.setItem("selectedCharacter", selectedCharacter);
+      
+      // Update global character state
+      await setSelectedCharacter(selectedCharacterId);
       
       setTimeout(() => {
         navigate("/");
@@ -78,7 +37,7 @@ const CharacterSelect = () => {
       {/* Character Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-5xl w-full">
         {characters.map((character) => {
-          const isSelected = selectedCharacter === character.id;
+          const isSelected = selectedCharacterId === character.id;
           
           return (
             <button
@@ -138,7 +97,7 @@ const CharacterSelect = () => {
       {/* Confirm Button */}
       <Button
         onClick={handleConfirm}
-        disabled={!selectedCharacter}
+        disabled={!selectedCharacterId}
         size="lg"
         className="text-xl px-12 py-6 rounded-full shadow-xl disabled:opacity-50"
       >
@@ -150,7 +109,7 @@ const CharacterSelect = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-50 animate-fade-in">
           <div className="text-center space-y-6 animate-scale-in">
             <div className="text-6xl animate-bounce-in">
-              {characters.find(c => c.id === selectedCharacter)?.emoji}
+              {characters.find(c => c.id === selectedCharacterId)?.emoji}
             </div>
             <h2 className="text-4xl font-bold text-foreground">
               この子に決めた！

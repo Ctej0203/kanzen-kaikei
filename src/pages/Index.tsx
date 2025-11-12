@@ -14,7 +14,7 @@ import { LoginBonusPopup } from "@/components/LoginBonusPopup";
 import { LoginCalendar } from "@/components/LoginCalendar";
 import { RecordCalendar } from "@/components/RecordCalendar";
 import { useLoginBonus } from "@/hooks/useLoginBonus";
-import curaCharacter from "@/assets/cura-character.png";
+import { useCharacter } from "@/hooks/useCharacter";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ const Index = () => {
     streak: number;
   } | null>(null);
   const { claimBonus } = useLoginBonus();
+  const { selectedCharacter } = useCharacter();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -110,9 +111,18 @@ const Index = () => {
       <header className="border-b bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-wiggle">
-              ✨ Curely
-            </h1>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-card border-2 border-primary/20 shadow-sm transition-all hover:scale-110 hover:shadow-md">
+                <img
+                  src={selectedCharacter.image}
+                  alt={selectedCharacter.name}
+                  className="w-full h-full object-contain p-1"
+                />
+              </div>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-wiggle">
+                ✨ Curely
+              </h1>
+            </div>
             <div className="flex items-center gap-2">
               <CoinBalance />
               <Button

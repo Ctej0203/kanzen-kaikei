@@ -8,59 +8,17 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import curaCharacter from "@/assets/cura-character.png";
-import suuCharacter from "@/assets/suu-character.png";
-import lunoCharacter from "@/assets/luno-character.png";
-
-type Character = "cura" | "suu" | "luno";
-
-interface CharacterData {
-  id: Character;
-  name: string;
-  emoji: string;
-  greeting: string;
-  color: string;
-  image: string;
-  description: string;
-}
-
-const characters: CharacterData[] = [
-  {
-    id: "cura",
-    name: "Cura",
-    emoji: "🩷",
-    greeting: "元気？Curaだよ🩷",
-    color: "hsl(320, 85%, 68%)",
-    image: curaCharacter,
-    description: "元気で前向き、励ましてくれるタイプ",
-  },
-  {
-    id: "suu",
-    name: "Suu",
-    emoji: "🩵",
-    greeting: "やっほ〜！Suuだよ🩵",
-    color: "hsl(180, 75%, 72%)",
-    image: suuCharacter,
-    description: "やさしくて、おっとりした性格",
-  },
-  {
-    id: "luno",
-    name: "Luno",
-    emoji: "💜",
-    greeting: "こんにちは、Lunoだよ🌙",
-    color: "hsl(280, 50%, 70%)",
-    image: lunoCharacter,
-    description: "静かで夢見るような雰囲気",
-  },
-];
+import { characters, CharacterId } from "@/lib/characterData";
+import { useCharacter } from "@/hooks/useCharacter";
 
 const Onboarding = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const { setSelectedCharacter } = useCharacter();
   
   // Step 2: Character selection
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+  const [selectedCharacterId, setSelectedCharacterId] = useState<CharacterId | null>(null);
   const [showCharacterConfirmation, setShowCharacterConfirmation] = useState(false);
   
   // Step 3: Profile information
@@ -70,14 +28,16 @@ const Onboarding = () => {
   const [currentlyTreating, setCurrentlyTreating] = useState<boolean | null>(null);
   const [triggers, setTriggers] = useState("");
 
-  const handleCharacterSelect = (characterId: Character) => {
-    setSelectedCharacter(characterId);
+  const handleCharacterSelect = (characterId: CharacterId) => {
+    setSelectedCharacterId(characterId);
   };
 
-  const handleCharacterConfirm = () => {
-    if (selectedCharacter) {
+  const handleCharacterConfirm = async () => {
+    if (selectedCharacterId) {
       setShowCharacterConfirmation(true);
-      localStorage.setItem("selectedCharacter", selectedCharacter);
+      
+      // Update global character state
+      await setSelectedCharacter(selectedCharacterId);
       
       setTimeout(() => {
         setShowCharacterConfirmation(false);
@@ -97,7 +57,7 @@ const Onboarding = () => {
       const { error } = await supabase
         .from("profiles")
         .update({
-          selected_character: selectedCharacter,
+          selected_character: selectedCharacterId,
           age: age ? parseInt(age) : null,
           diagnosed: diagnosed ?? false,
           diagnosis_year: diagnosisYear ? parseInt(diagnosisYear) : null,
@@ -191,7 +151,7 @@ const Onboarding = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-5xl w-full">
           {characters.map((character) => {
-            const isSelected = selectedCharacter === character.id;
+            const isSelected = selectedCharacterId === character.id;
             
             return (
               <button
@@ -247,7 +207,7 @@ const Onboarding = () => {
 
         <Button
           onClick={handleCharacterConfirm}
-          disabled={!selectedCharacter}
+          disabled={!selectedCharacterId}
           size="lg"
           className="text-xl px-12 py-6 rounded-full shadow-xl disabled:opacity-50"
         >
@@ -258,10 +218,10 @@ const Onboarding = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-50 animate-fade-in">
             <div className="text-center space-y-6 animate-scale-in">
               <div className="text-6xl animate-bounce-in">
-                {characters.find(c => c.id === selectedCharacter)?.emoji}
+                {characters.find(c => c.id === selectedCharacterId)?.emoji}
               </div>
               <h2 className="text-4xl font-bold text-foreground">
-                {characters.find(c => c.id === selectedCharacter)?.name}を選んでくれてありがとう！
+                {characters.find(c => c.id === selectedCharacterId)?.name}を選んでくれてありがとう！
               </h2>
               <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-primary to-accent opacity-30 blur-3xl animate-pulse-soft" />
             </div>
