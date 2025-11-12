@@ -308,6 +308,7 @@ export type Database = {
           diagnosis_year: number | null
           id: string
           onboarding_completed: boolean | null
+          selected_character: string | null
           triggers: string | null
           updated_at: string
           user_id: string
@@ -322,6 +323,7 @@ export type Database = {
           diagnosis_year?: number | null
           id?: string
           onboarding_completed?: boolean | null
+          selected_character?: string | null
           triggers?: string | null
           updated_at?: string
           user_id: string
@@ -336,6 +338,7 @@ export type Database = {
           diagnosis_year?: number | null
           id?: string
           onboarding_completed?: boolean | null
+          selected_character?: string | null
           triggers?: string | null
           updated_at?: string
           user_id?: string
