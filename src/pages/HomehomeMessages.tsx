@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Heart, RefreshCw, ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useCharacter } from "@/hooks/useCharacter";
+import lunoHomehome from "@/assets/luno-homehome.png";
 
 interface Message {
   id: string;
@@ -132,7 +133,7 @@ const HomehomeMessages = () => {
           {/* キャラクター表示 */}
           <div className="flex justify-center">
             <img 
-              src={selectedCharacter.image} 
+              src={selectedCharacter.id === "luno" ? lunoHomehome : selectedCharacter.image} 
               alt={selectedCharacter.name}
               className="w-48 h-48 md:w-64 md:h-64 animate-bounce-soft"
             />
