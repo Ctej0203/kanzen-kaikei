@@ -24,54 +24,51 @@ export const RecordCalendar = () => {
   );
 
   return (
-    <Card className="w-full shadow-lg hover:shadow-xl transition-all hover-lift gradient-card border-2 border-accent/20">
-      <CardHeader>
-        <CardTitle className="text-xl font-bold flex items-center gap-2">
-          <span className="text-foreground">
-            📝 {streak?.current_streak || 0}日連続記録中！
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-7 gap-2">
-          {last7Days.map((dateStr) => {
-            const date = new Date(dateStr);
-            const dayOfWeek = format(date, "E", { locale: ja });
-            const dayNum = format(date, "d");
-            const hasRecord = recordedDates.has(dateStr);
+    <Card className="p-4 bg-card/80 backdrop-blur-sm border-border/50 hover-lift">
+      <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
+        <span className="text-2xl">📝</span>
+        記録カレンダー
+      </h3>
+      <div className="grid grid-cols-7 gap-2">
+        {last7Days.map((dateStr) => {
+          const date = new Date(dateStr);
+          const dayOfWeek = format(date, "E", { locale: ja });
+          const dayNum = format(date, "d");
+          const hasRecord = recordedDates.has(dateStr);
 
-            return (
-              <div
-                key={dateStr}
-                className="flex flex-col items-center justify-center p-2 rounded-lg bg-white/50 relative"
-              >
-                <div className="text-xs font-medium" style={{ color: '#FFD6E7' }}>
-                  {dayOfWeek}
-                </div>
-                <div className="text-sm font-bold" style={{ color: '#FFD6E7' }}>
-                  {dayNum}
-                </div>
-                {hasRecord && (
-                  <div 
-                    className="absolute inset-0 flex items-center justify-center"
-                  >
-                    <img
-                      src={curaStamp}
-                      alt="Cura stamp"
-                      className="w-16 h-16 animate-bounce-in"
-                    />
-                  </div>
+          return (
+            <div
+              key={dateStr}
+              className="flex flex-col items-center gap-1 p-2 rounded-lg bg-secondary/30"
+            >
+              <div className="text-xs text-muted-foreground font-medium">
+                {dayOfWeek}
+              </div>
+              <div className="text-xs font-bold text-foreground">
+                {dayNum}
+              </div>
+              <div className="w-10 h-10 flex items-center justify-center">
+                {hasRecord ? (
+                  <img
+                    src={curaStamp}
+                    alt="Cura stamp"
+                    className="w-16 h-16 animate-bounce-in"
+                  />
+                ) : (
+                  <div className="w-2 h-2 rounded-full bg-muted/50"></div>
                 )}
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
+      </div>
+      {streak && (
+        <div className="mt-3 text-center">
+          <p className="text-sm text-muted-foreground">
+            現在 <span className="font-bold text-primary">{streak.current_streak}</span> 日連続！
+          </p>
         </div>
-        {streak && streak.current_streak > 0 && (
-          <div className="mt-4 text-center text-sm" style={{ color: '#FF6699' }}>
-            ✨ すばらしい！このまま続けましょう！
-          </div>
-        )}
-      </CardContent>
+      )}
     </Card>
   );
 };
