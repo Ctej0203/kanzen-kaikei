@@ -35,7 +35,7 @@ const CharacterSelect = () => {
       </h1>
 
       {/* Character Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-5xl w-full">
+      <div className="grid grid-cols-3 gap-4 md:gap-8 mb-12 max-w-5xl w-full px-2">
         {characters.map((character) => {
           const isSelected = selectedCharacterId === character.id;
           
