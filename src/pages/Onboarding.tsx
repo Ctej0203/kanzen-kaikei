@@ -6,22 +6,46 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { characters, CharacterId } from "@/lib/characterData";
 import { useCharacter } from "@/hooks/useCharacter";
+import { usePremiumStatus } from "@/hooks/usePremiumStatus";
+import { PremiumBadge } from "@/components/PremiumBadge";
+
+const mentalConditionOptions = [
+  { value: "depression", label: "うつ病（Depression）" },
+  { value: "anxiety_disorder", label: "不安障害（Anxiety disorder）" },
+  { value: "panic_disorder", label: "パニック障害（Panic disorder）" },
+  { value: "ptsd", label: "PTSD（心的外傷後ストレス障害）" },
+  { value: "ocd", label: "強迫性障害（OCD）" },
+  { value: "bipolar_disorder", label: "双極性障害（Bipolar disorder）" },
+  { value: "adhd", label: "注意欠陥・多動性障害（ADHD）" },
+  { value: "asd", label: "自閉スペクトラム症（ASD）" },
+  { value: "eating_disorder", label: "摂食障害（Eating disorder）" },
+  { value: "sleep_disorder", label: "睡眠障害（Sleep disorder / insomnia）" },
+  { value: "high_stress", label: "ストレスが強い" },
+  { value: "mood_swings", label: "特に診断はないけど気分の波がある" },
+  { value: "other", label: "その他" },
+];
 
 const Onboarding = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const { setSelectedCharacter } = useCharacter();
+  const { isPremium } = usePremiumStatus();
   
   // Step 2: Character selection
   const [selectedCharacterId, setSelectedCharacterId] = useState<CharacterId | null>(null);
   const [showCharacterConfirmation, setShowCharacterConfirmation] = useState(false);
   
-  // Step 3: Profile information
+  // Step 3: Mental condition selection
+  const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
+  const [otherCondition, setOtherCondition] = useState("");
+  
+  // Step 4: Profile information
   const [age, setAge] = useState("");
   const [diagnosed, setDiagnosed] = useState<boolean | null>(null);
   const [diagnosisYear, setDiagnosisYear] = useState("");
@@ -46,6 +70,36 @@ const Onboarding = () => {
     }
   };
 
+  const handleConditionToggle = (value: string) => {
+    if (!isPremium && selectedConditions.length >= 1 && !selectedConditions.includes(value)) {
+      // Non-premium users can only select one
+      setSelectedConditions([value]);
+    } else {
+      setSelectedConditions((prev) =>
+        prev.includes(value)
+          ? prev.filter((v) => v !== value)
+          : [...prev, value]
+      );
+    }
+    
+    // Clear other text if unchecking "other"
+    if (value === "other" && selectedConditions.includes("other")) {
+      setOtherCondition("");
+    }
+  };
+
+  const handleConditionNext = () => {
+    if (selectedConditions.length === 0) {
+      toast({
+        title: "選択してください",
+        description: "少なくとも1つ選択してください",
+        variant: "destructive",
+      });
+      return;
+    }
+    setStep(4);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -54,10 +108,16 @@ const Onboarding = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("ユーザーが見つかりません");
 
+      // Prepare condition types array
+      const conditionTypes = selectedConditions.includes("other") && otherCondition
+        ? [...selectedConditions.filter(c => c !== "other"), `other:${otherCondition}`]
+        : selectedConditions;
+
       const { error } = await supabase
         .from("profiles")
         .update({
           selected_character: selectedCharacterId,
+          condition_types: conditionTypes,
           age: age ? parseInt(age) : null,
           diagnosed: diagnosed ?? false,
           diagnosis_year: diagnosisYear ? parseInt(diagnosisYear) : null,
@@ -231,7 +291,112 @@ const Onboarding = () => {
     );
   }
 
-  // Step 3: Profile Information
+  // Step 3: Mental Condition Selection
+  if (step === 3) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-accent/20 via-background to-secondary/30 p-4">
+        <Card className="w-full max-w-3xl bg-card/90 backdrop-blur-sm border-2 border-border/50">
+          <CardHeader className="text-center space-y-3">
+            <div className="flex items-center justify-center gap-2 text-4xl mb-2">
+              <span>🌸</span>
+              <span>💝</span>
+              <span>✨</span>
+            </div>
+            <CardTitle className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+              ご自身の心の状態について教えてください
+            </CardTitle>
+            <CardDescription className="text-lg text-muted-foreground">
+              {isPremium ? (
+                <span className="flex items-center justify-center gap-2">
+                  当てはまるものを選んでください（複数選択可）
+                  <PremiumBadge />
+                </span>
+              ) : (
+                <span className="flex flex-col items-center gap-2">
+                  <span>当てはまるものを1つ選んでください</span>
+                  <span className="text-sm text-primary flex items-center gap-1">
+                    <Sparkles className="h-3 w-3" />
+                    プレミアムプランで複数選択が可能になります
+                  </span>
+                </span>
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {mentalConditionOptions.map((option) => (
+                <label
+                  key={option.value}
+                  className={`
+                    relative flex items-start gap-3 p-4 rounded-2xl border-2 cursor-pointer
+                    transition-all duration-300 hover:scale-[1.02] hover:shadow-lg
+                    ${
+                      selectedConditions.includes(option.value)
+                        ? "border-primary bg-primary/5 shadow-md"
+                        : "border-border/50 bg-card/50 hover:border-primary/30"
+                    }
+                  `}
+                >
+                  <Checkbox
+                    checked={selectedConditions.includes(option.value)}
+                    onCheckedChange={() => handleConditionToggle(option.value)}
+                    className="mt-0.5"
+                  />
+                  <div className="flex-1">
+                    <span className="text-base font-medium text-foreground leading-relaxed">
+                      {option.label}
+                    </span>
+                  </div>
+                  {selectedConditions.includes(option.value) && (
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg animate-scale-in">
+                      <span className="text-xs text-primary-foreground">✓</span>
+                    </div>
+                  )}
+                </label>
+              ))}
+            </div>
+
+            {selectedConditions.includes("other") && (
+              <div className="space-y-2 animate-fade-in">
+                <Label htmlFor="otherCondition" className="text-base">
+                  その他の状態を入力してください
+                </Label>
+                <Textarea
+                  id="otherCondition"
+                  placeholder="例：季節性うつ、社交不安など"
+                  value={otherCondition}
+                  onChange={(e) => setOtherCondition(e.target.value)}
+                  rows={3}
+                  className="rounded-xl border-2 focus:border-primary"
+                />
+              </div>
+            )}
+
+            <div className="flex gap-4 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setStep(2)}
+                className="flex-1 rounded-full py-6 text-lg"
+              >
+                戻る
+              </Button>
+              <Button
+                type="button"
+                onClick={handleConditionNext}
+                disabled={selectedConditions.length === 0}
+                className="flex-1 rounded-full py-6 text-lg shadow-lg"
+              >
+                次へ
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Step 4: Profile Information
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-accent/20 via-background to-secondary/30 p-4">
       <Card className="w-full max-w-2xl bg-card/90 backdrop-blur-sm">
@@ -329,10 +494,21 @@ const Onboarding = () => {
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              始める
-            </Button>
+            <div className="flex gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setStep(3)}
+                disabled={loading}
+                className="flex-1"
+              >
+                戻る
+              </Button>
+              <Button type="submit" className="flex-1" disabled={loading}>
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                始める
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>

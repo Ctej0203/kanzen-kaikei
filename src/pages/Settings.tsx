@@ -61,6 +61,20 @@ const Settings = () => {
         
         <Card>
           <CardHeader>
+            <CardTitle>心の状態の編集</CardTitle>
+            <CardDescription>
+              メンタルヘルス状態や診断名を管理します
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={() => navigate("/mental-conditions")}>
+              心の状態を編集
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>データのエクスポート</CardTitle>
             <CardDescription>
               症状記録をJSON形式でダウンロードします

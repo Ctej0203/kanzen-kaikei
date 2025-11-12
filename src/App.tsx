@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import Records from "./pages/Records";
 import Settings from "./pages/Settings";
+import MentalConditions from "./pages/MentalConditions";
 import HomehomeMessages from "./pages/HomehomeMessages";
 import MentalRecord from "./pages/MentalRecord";
 import Wardrobe from "./pages/Wardrobe";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/records" element={<Records />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/mental-conditions" element={<MentalConditions />} />
             <Route path="/homehome" element={<HomehomeMessages />} />
             <Route path="/mental-record" element={<MentalRecord />} />
             <Route path="/wardrobe" element={<Wardrobe />} />
