@@ -15,6 +15,7 @@ import Coins from "./pages/Coins";
 import Gacha from "./pages/Gacha";
 import AiChat from "./pages/AiChat";
 import Premium from "./pages/Premium";
+import CharacterSelect from "./pages/CharacterSelect";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/gacha" element={<Gacha />} />
           <Route path="/ai-chat" element={<AiChat />} />
           <Route path="/premium" element={<Premium />} />
+          <Route path="/character-select" element={<CharacterSelect />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
