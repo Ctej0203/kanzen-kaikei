@@ -87,6 +87,20 @@ const Settings = () => {
             </Button>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>キャラクター変更</CardTitle>
+            <CardDescription>
+              応援してくれるキャラクターを変更します
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={() => navigate("/character-select")}>
+              キャラクターを変更する
+            </Button>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import curaCharacter from "@/assets/cura-happy.png";
+import curaCharacter from "@/assets/cura-character.png";
 import suuCharacter from "@/assets/suu-character.png";
 import lunoCharacter from "@/assets/luno-character.png";
 
