@@ -7,7 +7,7 @@ import { Slider } from "@/components/ui/slider";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useRecordStreak } from "@/hooks/useRecordStreak";
-import { RecordCalendar } from "./RecordCalendar";
+import { UnifiedCalendar } from "./UnifiedCalendar";
 
 interface MoodLoggerProps {
   onRecordSuccess?: () => void;
@@ -127,7 +127,11 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
           </Button>
         </CardContent>
       </Card>
-      <RecordCalendar open={showCalendar} onOpenChange={setShowCalendar} />
+      <UnifiedCalendar 
+        open={showCalendar} 
+        onOpenChange={setShowCalendar}
+        defaultTab="record"
+      />
     </>
   );
 };
