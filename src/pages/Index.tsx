@@ -11,10 +11,9 @@ import { LogOut, Settings, FileText, Heart } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { CoinBalance } from "@/components/CoinBalance";
 import { LoginBonusPopup } from "@/components/LoginBonusPopup";
-import { LoginCalendar } from "@/components/LoginCalendar";
-import { RecordCalendar } from "@/components/RecordCalendar";
-import { CalendarRibbon } from "@/components/CalendarRibbon";
+import { UnifiedCalendar } from "@/components/UnifiedCalendar";
 import { useLoginBonus } from "@/hooks/useLoginBonus";
+import { Calendar } from "lucide-react";
 import { useCharacter } from "@/hooks/useCharacter";
 
 const Index = () => {
@@ -26,8 +25,8 @@ const Index = () => {
     coins: number;
     streak: number;
   } | null>(null);
-  const [showLoginCalendar, setShowLoginCalendar] = useState(false);
-  const [showRecordCalendar, setShowRecordCalendar] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarTab, setCalendarTab] = useState<"login" | "record">("login");
   const [shouldShowLoginCalendar, setShouldShowLoginCalendar] = useState(false);
   const { claimBonus } = useLoginBonus();
   const { selectedCharacter } = useCharacter();
@@ -112,18 +111,18 @@ const Index = () => {
           onClose={() => {
             setBonusData(null);
             if (shouldShowLoginCalendar) {
-              setShowLoginCalendar(true);
+              setCalendarTab("login");
+              setShowCalendar(true);
               setShouldShowLoginCalendar(false);
             }
           }}
         />
       )}
 
-      <LoginCalendar open={showLoginCalendar} onOpenChange={setShowLoginCalendar} />
-      <RecordCalendar open={showRecordCalendar} onOpenChange={setShowRecordCalendar} />
-      <CalendarRibbon 
-        onLoginCalendarClick={() => setShowLoginCalendar(true)}
-        onRecordCalendarClick={() => setShowRecordCalendar(true)}
+      <UnifiedCalendar 
+        open={showCalendar} 
+        onOpenChange={setShowCalendar}
+        defaultTab={calendarTab}
       />
 
       <header className="border-b bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
@@ -143,6 +142,18 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-2">
               <CoinBalance />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  setCalendarTab("login");
+                  setShowCalendar(true);
+                }}
+                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all"
+                title="カレンダー"
+              >
+                <Calendar className="h-5 w-5" />
+              </Button>
               <Button
                 variant="ghost"
                 size="icon"
