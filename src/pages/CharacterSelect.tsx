@@ -3,12 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { characters, CharacterId } from "@/lib/characterData";
 import { useCharacter } from "@/hooks/useCharacter";
+import { useCharacterAffection } from "@/hooks/useCharacterAffection";
+import { Heart } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 const CharacterSelect = () => {
   const [selectedCharacterId, setSelectedCharacterId] = useState<CharacterId | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
   const { setSelectedCharacter } = useCharacter();
+  const { getAffectionLevel, getProgressToNextThreshold } = useCharacterAffection();
 
   const handleCharacterSelect = (characterId: CharacterId) => {
     setSelectedCharacterId(characterId);
@@ -38,6 +42,8 @@ const CharacterSelect = () => {
       <div className="grid grid-cols-3 gap-4 md:gap-8 mb-12 max-w-5xl w-full px-2">
         {characters.map((character) => {
           const isSelected = selectedCharacterId === character.id;
+          const affectionLevel = getAffectionLevel(character.id);
+          const progress = getProgressToNextThreshold(affectionLevel);
           
           return (
             <button
@@ -81,6 +87,18 @@ const CharacterSelect = () => {
                 <p className="text-lg text-foreground font-medium">
                   {character.greeting}
                 </p>
+                
+                {/* Affection Display */}
+                <div className="mt-3 space-y-1">
+                  <div className="flex items-center justify-center gap-1 text-sm">
+                    <Heart className="w-4 h-4 text-primary fill-primary" />
+                    <span className="font-bold text-primary">Lv.{affectionLevel}</span>
+                  </div>
+                  <Progress value={(progress / 10) * 100} className="h-1.5" />
+                  <div className="text-xs text-muted-foreground">
+                    {progress}/10
+                  </div>
+                </div>
               </div>
 
               {/* Selection Indicator */}
