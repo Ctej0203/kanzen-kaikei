@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 interface LoginBonusResult {
@@ -14,6 +14,8 @@ interface LoginStreak {
 }
 
 export const useLoginBonus = () => {
+  const queryClient = useQueryClient();
+
   const claimBonus = useMutation({
     mutationFn: async (): Promise<LoginBonusResult> => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -25,6 +27,11 @@ export const useLoginBonus = () => {
 
       if (error) throw error;
       return data[0] as LoginBonusResult;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["login-streak"] });
+      queryClient.invalidateQueries({ queryKey: ["user-currency"] });
+      queryClient.invalidateQueries({ queryKey: ["character-affection"] });
     },
   });
 

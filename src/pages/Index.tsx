@@ -15,6 +15,9 @@ import { UnifiedCalendar } from "@/components/UnifiedCalendar";
 import { useLoginBonus } from "@/hooks/useLoginBonus";
 import { Calendar } from "lucide-react";
 import { useCharacter } from "@/hooks/useCharacter";
+import { AffectionDisplay } from "@/components/AffectionDisplay";
+import { AffectionIncreaseAnimation } from "@/components/AffectionIncreaseAnimation";
+import { useCharacterAffection } from "@/hooks/useCharacterAffection";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -28,8 +31,10 @@ const Index = () => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [calendarTab, setCalendarTab] = useState<"login" | "record">("login");
   const [shouldShowLoginCalendar, setShouldShowLoginCalendar] = useState(false);
+  const [showAffectionAnimation, setShowAffectionAnimation] = useState(false);
   const { claimBonus } = useLoginBonus();
   const { selectedCharacter } = useCharacter();
+  const { increaseAffection } = useCharacterAffection();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -62,6 +67,21 @@ const Index = () => {
               streak: result.current_streak,
             });
             setShouldShowLoginCalendar(true);
+
+            // Increase affection for current character
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("selected_character")
+              .eq("user_id", session.user.id)
+              .single();
+
+            if (profile?.selected_character) {
+              await increaseAffection.mutateAsync({
+                characterId: profile.selected_character as any,
+                amount: 1,
+              });
+              setShowAffectionAnimation(true);
+            }
           }
         } catch (error) {
           console.error("Login bonus error:", error);
@@ -104,6 +124,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-background">
+      {showAffectionAnimation && (
+        <AffectionIncreaseAnimation
+          amount={1}
+          onComplete={() => setShowAffectionAnimation(false)}
+        />
+      )}
+
       {bonusData && (
         <LoginBonusPopup
           coinsEarned={bonusData.coins}
@@ -194,6 +221,10 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8 max-w-2xl pb-24">
         <div className="space-y-8">
+          <section className="hover-lift">
+            <AffectionDisplay />
+          </section>
+
           <section className="hover-lift">
             <MentalScoreDisplay />
           </section>

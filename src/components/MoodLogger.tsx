@@ -8,6 +8,9 @@ import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useRecordStreak } from "@/hooks/useRecordStreak";
 import { UnifiedCalendar } from "./UnifiedCalendar";
+import { useCharacter } from "@/hooks/useCharacter";
+import { useCharacterAffection } from "@/hooks/useCharacterAffection";
+import { AffectionIncreaseAnimation } from "./AffectionIncreaseAnimation";
 
 interface MoodLoggerProps {
   onRecordSuccess?: () => void;
@@ -18,7 +21,10 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
   const [memo, setMemo] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showAffectionAnimation, setShowAffectionAnimation] = useState(false);
   const { refetch: refetchStreak } = useRecordStreak();
+  const { selectedCharacter } = useCharacter();
+  const { increaseAffection } = useCharacterAffection();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -62,6 +68,14 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
       // ストリークデータを更新
       await refetchStreak();
 
+      // Increase affection for current character
+      await increaseAffection.mutateAsync({
+        characterId: selectedCharacter.id,
+        amount: 1,
+      });
+
+      setShowAffectionAnimation(true);
+
       toast({
         title: "記録しました",
         description: aiScore ? `メンタルスコア: ${aiScore}点` : "今日の調子を記録しました",
@@ -70,8 +84,11 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
       setMoodScore([5]);
       setMemo("");
       
-      // カレンダーポップアップを表示
-      setShowCalendar(true);
+      // Show affection animation first, then calendar
+      setTimeout(() => {
+        setShowCalendar(true);
+      }, 2000);
+      
       onRecordSuccess?.();
     } catch (error: any) {
       toast({
@@ -86,6 +103,19 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
 
   return (
     <>
+      {showAffectionAnimation && (
+        <AffectionIncreaseAnimation
+          amount={1}
+          onComplete={() => setShowAffectionAnimation(false)}
+        />
+      )}
+
+      <UnifiedCalendar 
+        open={showCalendar} 
+        onOpenChange={setShowCalendar}
+        defaultTab="record"
+      />
+      
       <Card className="w-full shadow-lg hover:shadow-xl transition-all hover-lift gradient-card border-2 border-accent/20">
         <CardHeader>
           <CardTitle className="text-xl font-bold">今日の気持ちを記録しよう</CardTitle>
