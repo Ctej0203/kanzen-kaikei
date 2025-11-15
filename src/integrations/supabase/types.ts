@@ -300,6 +300,7 @@ export type Database = {
       profiles: {
         Row: {
           age: number | null
+          character_affection: Json | null
           condition_types: string[] | null
           created_at: string
           currently_treating: boolean | null
@@ -315,6 +316,7 @@ export type Database = {
         }
         Insert: {
           age?: number | null
+          character_affection?: Json | null
           condition_types?: string[] | null
           created_at?: string
           currently_treating?: boolean | null
@@ -330,6 +332,7 @@ export type Database = {
         }
         Update: {
           age?: number | null
+          character_affection?: Json | null
           condition_types?: string[] | null
           created_at?: string
           currently_treating?: boolean | null
@@ -512,6 +515,14 @@ export type Database = {
           coins_earned: number
           current_streak: number
           is_new_day: boolean
+        }[]
+      }
+      increase_character_affection: {
+        Args: { p_amount?: number; p_character_id: string; p_user_id: string }
+        Returns: {
+          coins_awarded: number
+          new_affection: number
+          threshold_reached: number
         }[]
       }
       increment_ai_quota: { Args: { p_user_id: string }; Returns: undefined }
