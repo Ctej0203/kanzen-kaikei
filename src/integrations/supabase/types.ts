@@ -346,7 +346,12 @@ export type Database = {
           customization_preferences: Json | null
           diagnosed: boolean | null
           diagnosis_year: number | null
+          followup_due_at: string | null
           id: string
+          last_email_sent_at: string | null
+          last_login_at: string | null
+          login_count: number | null
+          needs_followup: boolean | null
           onboarding_completed: boolean | null
           selected_character: string | null
           triggers: string | null
@@ -362,7 +367,12 @@ export type Database = {
           customization_preferences?: Json | null
           diagnosed?: boolean | null
           diagnosis_year?: number | null
+          followup_due_at?: string | null
           id?: string
+          last_email_sent_at?: string | null
+          last_login_at?: string | null
+          login_count?: number | null
+          needs_followup?: boolean | null
           onboarding_completed?: boolean | null
           selected_character?: string | null
           triggers?: string | null
@@ -378,7 +388,12 @@ export type Database = {
           customization_preferences?: Json | null
           diagnosed?: boolean | null
           diagnosis_year?: number | null
+          followup_due_at?: string | null
           id?: string
+          last_email_sent_at?: string | null
+          last_login_at?: string | null
+          login_count?: number | null
+          needs_followup?: boolean | null
           onboarding_completed?: boolean | null
           selected_character?: string | null
           triggers?: string | null
