@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
-import { BreathingGuide } from "@/components/BreathingGuide";
 import { HomehomeCard } from "@/components/HomehomeCard";
 import { MoodLogger } from "@/components/MoodLogger";
 import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
-import { LogOut, Settings, FileText, Heart, Video } from "lucide-react";
+import { LogOut, Settings, FileText, Heart, Video, Wind } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { CoinBalance } from "@/components/CoinBalance";
@@ -194,6 +193,15 @@ const Index = () => {
               <Button
                 variant="ghost"
                 size="icon"
+                onClick={() => navigate("/breathing-guide")}
+                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all"
+                title="呼吸法ガイド"
+              >
+                <Wind className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => navigate("/records")}
                 className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all"
               >
@@ -255,14 +263,6 @@ const Index = () => {
               今日の日記
             </h2>
             <MoodLogger />
-          </section>
-
-          <section className="hover-lift">
-            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <span className="text-3xl">🌸</span>
-              呼吸法ガイド
-            </h2>
-            <BreathingGuide />
           </section>
 
           <section className="hover-lift">
