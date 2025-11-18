@@ -21,6 +21,7 @@ import CharacterSelect from "./pages/CharacterSelect";
 import OnlineConsultation from "./pages/OnlineConsultation";
 import ConsultationBooking from "./pages/ConsultationBooking";
 import ConsultationList from "./pages/ConsultationList";
+import BreathingGuidePage from "./pages/BreathingGuidePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => (
             <Route path="/online-consultation" element={<OnlineConsultation />} />
             <Route path="/consultation-booking" element={<ConsultationBooking />} />
             <Route path="/consultation-list" element={<ConsultationList />} />
+            <Route path="/breathing-guide" element={<BreathingGuidePage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
