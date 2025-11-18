@@ -18,6 +18,7 @@ import Gacha from "./pages/Gacha";
 import AiChat from "./pages/AiChat";
 import Premium from "./pages/Premium";
 import CharacterSelect from "./pages/CharacterSelect";
+import OnlineConsultation from "./pages/OnlineConsultation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/ai-chat" element={<AiChat />} />
             <Route path="/premium" element={<Premium />} />
             <Route path="/character-select" element={<CharacterSelect />} />
+            <Route path="/online-consultation" element={<OnlineConsultation />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
