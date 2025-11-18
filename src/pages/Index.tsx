@@ -238,6 +238,18 @@ const Index = () => {
             <MentalScoreDisplay />
           </section>
 
+          <section className="hover-lift">
+            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+              <span className="text-3xl">📝</span>
+              今日の日記
+            </h2>
+            <MoodLogger />
+          </section>
+
+          <section className="hover-lift">
+            <HomehomeCard />
+          </section>
+
           <section 
             className="hover-lift cursor-pointer" 
             onClick={() => navigate("/online-consultation")}
@@ -255,18 +267,6 @@ const Index = () => {
                 </div>
               </CardHeader>
             </Card>
-          </section>
-
-          <section className="hover-lift">
-            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <span className="text-3xl">📝</span>
-              今日の日記
-            </h2>
-            <MoodLogger />
-          </section>
-
-          <section className="hover-lift">
-            <HomehomeCard />
           </section>
         </div>
       </main>
