@@ -89,6 +89,45 @@ export type Database = {
         }
         Relationships: []
       }
+      consultations: {
+        Row: {
+          consultation_type: string
+          created_at: string
+          doctor_name: string | null
+          id: string
+          notes: string | null
+          scheduled_date: string
+          scheduled_time: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          consultation_type?: string
+          created_at?: string
+          doctor_name?: string | null
+          id?: string
+          notes?: string | null
+          scheduled_date: string
+          scheduled_time: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          consultation_type?: string
+          created_at?: string
+          doctor_name?: string | null
+          id?: string
+          notes?: string | null
+          scheduled_date?: string
+          scheduled_time?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       favorite_messages: {
         Row: {
           created_at: string

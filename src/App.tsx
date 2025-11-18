@@ -19,6 +19,8 @@ import AiChat from "./pages/AiChat";
 import Premium from "./pages/Premium";
 import CharacterSelect from "./pages/CharacterSelect";
 import OnlineConsultation from "./pages/OnlineConsultation";
+import ConsultationBooking from "./pages/ConsultationBooking";
+import ConsultationList from "./pages/ConsultationList";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +48,8 @@ const App = () => (
             <Route path="/premium" element={<Premium />} />
             <Route path="/character-select" element={<CharacterSelect />} />
             <Route path="/online-consultation" element={<OnlineConsultation />} />
+            <Route path="/consultation-booking" element={<ConsultationBooking />} />
+            <Route path="/consultation-list" element={<ConsultationList />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

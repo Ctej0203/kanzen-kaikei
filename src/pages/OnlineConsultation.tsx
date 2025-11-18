@@ -89,17 +89,19 @@ const OnlineConsultation = () => {
           <Button 
             className="w-full h-14 text-lg shadow-lg hover:shadow-xl transition-shadow"
             size="lg"
+            onClick={() => navigate("/consultation-booking")}
           >
-            <Video className="w-5 h-5 mr-2" />
-            今すぐ相談できる先生を探す
+            <Clock className="w-5 h-5 mr-2" />
+            日時を指定して予約する
           </Button>
           <Button 
             variant="outline" 
             className="w-full h-14 text-lg"
             size="lg"
+            onClick={() => navigate("/consultation-list")}
           >
-            <Clock className="w-5 h-5 mr-2" />
-            日時を指定して予約する
+            <Calendar className="w-5 h-5 mr-2" />
+            予約一覧を見る
           </Button>
         </div>
 
