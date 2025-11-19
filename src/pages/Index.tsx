@@ -18,6 +18,7 @@ import { useCharacter } from "@/hooks/useCharacter";
 import { AffectionDisplay } from "@/components/AffectionDisplay";
 import { AffectionIncreaseAnimation } from "@/components/AffectionIncreaseAnimation";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
+import curaDoctor from "@/assets/cura-doctor.png";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -266,6 +267,13 @@ const Index = () => {
                   </div>
                 </div>
               </CardHeader>
+              <CardContent className="flex justify-center pb-6">
+                <img 
+                  src={curaDoctor} 
+                  alt="Cura Doctor" 
+                  className="w-32 h-32 object-contain"
+                />
+              </CardContent>
             </Card>
           </section>
         </div>
