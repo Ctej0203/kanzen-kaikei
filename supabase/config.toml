@@ -5,3 +5,9 @@ verify_jwt = true
 
 [functions.ai-chat]
 verify_jwt = true
+
+[functions.send-inactive-user-email]
+verify_jwt = false
+
+[functions.send-followup-email]
+verify_jwt = false
