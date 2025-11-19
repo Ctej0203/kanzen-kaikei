@@ -8,10 +8,11 @@ import { useAiChat } from "@/hooks/useAiChat";
 import { usePremiumStatus } from "@/hooks/usePremiumStatus";
 import { CrisisDialog } from "@/components/CrisisDialog";
 import { PremiumBadge } from "@/components/PremiumBadge";
+import { AffectionDisplay } from "@/components/AffectionDisplay";
+import { useCharacter } from "@/hooks/useCharacter";
 import { MessageCircle, Send, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import curaHappy from "@/assets/cura-happy.png";
 
 interface Message {
   role: "user" | "assistant";
@@ -26,21 +27,22 @@ export default function AiChat() {
   
   const aiChatMutation = useAiChat();
   const { isPremium } = usePremiumStatus();
+  const { selectedCharacter } = useCharacter();
 
-  const { data: quota } = useQuery({
-    queryKey: ["ai-quota"],
+  // 会話数をカウント
+  const { data: conversationCount } = useQuery({
+    queryKey: ["ai-conversation-count"],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return null;
+      if (!user) return 0;
 
-      const { data, error } = await supabase
-        .from("ai_quota")
-        .select("*")
-        .eq("user_id", user.id)
-        .maybeSingle();
+      const { count, error } = await supabase
+        .from("ai_conversations")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user.id);
 
       if (error) throw error;
-      return data;
+      return count || 0;
     },
   });
 
@@ -93,18 +95,28 @@ export default function AiChat() {
     }
   };
 
-  const remainingMessages = isPremium ? null : Math.max(0, 100 - (quota?.free_messages_used || 0));
+  const remainingMessages = isPremium ? null : Math.max(0, 10 - (conversationCount || 0));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-purple-50 p-6">
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          {isPremium && <PremiumBadge />}
+        </div>
+
+        <AffectionDisplay />
+
         {/* ヘッダー */}
         <div className="text-center mb-6">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <img src={curaHappy} alt="Cura" className="w-16 h-16 rounded-full" />
+            <img 
+              src={selectedCharacter.image} 
+              alt={selectedCharacter.name} 
+              className="w-16 h-16 rounded-full object-cover" 
+            />
             <div className="text-left">
-              <h1 className="text-3xl font-bold text-primary">Curaとおしゃべり</h1>
-              <p className="text-muted-foreground">いつでもあなたの味方です</p>
+              <h1 className="text-3xl font-bold text-primary">{selectedCharacter.name}とおしゃべり</h1>
+              <p className="text-muted-foreground">{selectedCharacter.description}</p>
             </div>
           </div>
 
@@ -113,7 +125,7 @@ export default function AiChat() {
             <div className="mt-4">
               <Card className="p-3 bg-purple-50 border-purple-200">
                 <p className="text-sm text-purple-900">
-                  今月の残りメッセージ: <span className="font-bold text-lg">{remainingMessages}</span> / 100
+                  残りレスポンス数: <span className="font-bold text-lg">{remainingMessages}</span> / 10
                 </p>
                 <p className="text-xs text-purple-700 mt-1">
                   <PremiumBadge /> で無制限に利用できます
@@ -130,7 +142,7 @@ export default function AiChat() {
               <div className="h-full flex items-center justify-center text-center text-muted-foreground">
                 <div>
                   <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
-                  <p className="text-lg">Curaにメッセージを送ってみましょう</p>
+                  <p className="text-lg">{selectedCharacter.name}にメッセージを送ってみましょう</p>
                   <p className="text-sm mt-2">あなたの気持ちを聞かせてください</p>
                 </div>
               </div>
@@ -149,8 +161,12 @@ export default function AiChat() {
                   >
                     {message.role === "assistant" && (
                       <div className="flex items-center gap-2 mb-1">
-                        <img src={curaHappy} alt="Cura" className="w-6 h-6 rounded-full" />
-                        <span className="text-xs font-semibold text-primary">Cura</span>
+                        <img 
+                          src={selectedCharacter.image} 
+                          alt={selectedCharacter.name} 
+                          className="w-6 h-6 rounded-full object-cover" 
+                        />
+                        <span className="text-xs font-semibold text-primary">{selectedCharacter.name}</span>
                       </div>
                     )}
                     <p className="whitespace-pre-wrap">{message.content}</p>
@@ -169,7 +185,7 @@ export default function AiChat() {
                 <div className="max-w-[70%] rounded-2xl px-4 py-3 bg-muted">
                   <div className="flex items-center gap-2">
                     <Loader2 className="animate-spin" size={16} />
-                    <span className="text-sm">Curaが考えています...</span>
+                    <span className="text-sm">{selectedCharacter.name}が考えています...</span>
                   </div>
                 </div>
               </div>
