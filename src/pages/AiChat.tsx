@@ -97,29 +97,50 @@ export default function AiChat() {
         setShowCrisisDialog(true);
       }
 
-      // 会話後に好感度を増やす
-      const currentLevel = getAffectionLevel(selectedCharacter.id);
-      const currentThreshold = Math.floor(currentLevel / 10) * 10;
-      
-      setShowAffectionAnimation(true);
-      
-      await increaseAffection.mutateAsync(
-        { characterId: selectedCharacter.id, amount: 1 },
-        {
-          onSuccess: (result) => {
-            // レベルアップ（10の倍数到達）を検知
-            if (result.threshold_reached > currentThreshold) {
-              const levelUpMessage = selectedCharacter.levelUpMessages[result.threshold_reached];
-              if (levelUpMessage) {
-                setLevelUpInfo({
-                  level: result.threshold_reached,
-                  message: levelUpMessage,
-                });
-              }
+      // 会話後に好感度を増やす（1日1回のみ）
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("last_chat_affection_date")
+          .eq("user_id", user.id)
+          .single();
+
+        const today = new Date().toISOString().split('T')[0];
+        const lastChatDate = profile?.last_chat_affection_date;
+
+        // 今日初めてのチャットの場合のみ好感度を増やす
+        if (!lastChatDate || lastChatDate !== today) {
+          const currentLevel = getAffectionLevel(selectedCharacter.id);
+          const currentThreshold = Math.floor(currentLevel / 10) * 10;
+          
+          setShowAffectionAnimation(true);
+          
+          await increaseAffection.mutateAsync(
+            { characterId: selectedCharacter.id, amount: 1 },
+            {
+              onSuccess: (result) => {
+                // レベルアップ（10の倍数到達）を検知
+                if (result.threshold_reached > currentThreshold) {
+                  const levelUpMessage = selectedCharacter.levelUpMessages[result.threshold_reached];
+                  if (levelUpMessage) {
+                    setLevelUpInfo({
+                      level: result.threshold_reached,
+                      message: levelUpMessage,
+                    });
+                  }
+                }
+              },
             }
-          },
+          );
+
+          // last_chat_affection_dateを更新
+          await supabase
+            .from("profiles")
+            .update({ last_chat_affection_date: today })
+            .eq("user_id", user.id);
         }
-      );
+      }
     } catch (error) {
       // エラーは useAiChat フックでトーストで表示される
     }

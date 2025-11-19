@@ -69,18 +69,7 @@ const Index = () => {
               streak: result.current_streak
             });
             setShouldShowLoginCalendar(true);
-
-            // Increase affection for current character
-            const {
-              data: profile
-            } = await supabase.from("profiles").select("selected_character").eq("user_id", session.user.id).single();
-            if (profile?.selected_character) {
-              await increaseAffection.mutateAsync({
-                characterId: profile.selected_character as any,
-                amount: 1
-              });
-              setShowAffectionAnimation(true);
-            }
+            setShowAffectionAnimation(true);
           }
         } catch (error) {
           console.error("Login bonus error:", error);

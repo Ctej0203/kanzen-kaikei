@@ -348,6 +348,7 @@ export type Database = {
           diagnosis_year: number | null
           followup_due_at: string | null
           id: string
+          last_chat_affection_date: string | null
           last_email_sent_at: string | null
           last_login_at: string | null
           login_count: number | null
@@ -369,6 +370,7 @@ export type Database = {
           diagnosis_year?: number | null
           followup_due_at?: string | null
           id?: string
+          last_chat_affection_date?: string | null
           last_email_sent_at?: string | null
           last_login_at?: string | null
           login_count?: number | null
@@ -390,6 +392,7 @@ export type Database = {
           diagnosis_year?: number | null
           followup_due_at?: string | null
           id?: string
+          last_chat_affection_date?: string | null
           last_email_sent_at?: string | null
           last_login_at?: string | null
           login_count?: number | null
