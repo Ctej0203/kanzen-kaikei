@@ -39,7 +39,12 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
       if (memo && memo.trim()) {
         try {
           const { data: functionData, error: functionError } = await supabase.functions.invoke('analyze-diary', {
-            body: { memo }
+            body: { 
+              user_id: user.id,
+              mood_score: moodScore[0],
+              memo,
+              character_id: selectedCharacter.id,
+            }
           });
           
           if (functionError) {
