@@ -256,15 +256,15 @@ const Index = () => {
             onClick={() => navigate("/online-consultation")}
           >
             <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all hover:border-primary/40">
-              <CardHeader>
-                <div className="flex items-center gap-3 justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Video className="w-6 h-6 text-primary" />
+              <CardHeader className="p-8">
+                <div className="flex items-center gap-4 justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Video className="w-8 h-8 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-xl">オンライン診療</CardTitle>
-                      <CardDescription>専門家にオンラインで相談できます</CardDescription>
+                      <CardTitle className="text-2xl">オンライン診療</CardTitle>
+                      <CardDescription className="text-base">専門家にオンラインで相談できます</CardDescription>
                     </div>
                   </div>
                   <img 
