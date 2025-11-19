@@ -9,7 +9,10 @@ import { usePremiumStatus } from "@/hooks/usePremiumStatus";
 import { CrisisDialog } from "@/components/CrisisDialog";
 import { PremiumBadge } from "@/components/PremiumBadge";
 import { AffectionDisplay } from "@/components/AffectionDisplay";
+import { AffectionIncreaseAnimation } from "@/components/AffectionIncreaseAnimation";
+import { AffectionLevelUpDialog } from "@/components/AffectionLevelUpDialog";
 import { useCharacter } from "@/hooks/useCharacter";
+import { useCharacterAffection } from "@/hooks/useCharacterAffection";
 import { MessageCircle, Send, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
@@ -24,10 +27,13 @@ export default function AiChat() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [showCrisisDialog, setShowCrisisDialog] = useState(false);
+  const [showAffectionAnimation, setShowAffectionAnimation] = useState(false);
+  const [levelUpInfo, setLevelUpInfo] = useState<{ level: number; message: string } | null>(null);
   
   const aiChatMutation = useAiChat();
   const { isPremium } = usePremiumStatus();
   const { selectedCharacter } = useCharacter();
+  const { increaseAffection, getAffectionLevel } = useCharacterAffection();
 
   // 会話数をカウント
   const { data: conversationCount } = useQuery({
@@ -90,6 +96,30 @@ export default function AiChat() {
       if (result.hasCrisis) {
         setShowCrisisDialog(true);
       }
+
+      // 会話後に好感度を増やす
+      const currentLevel = getAffectionLevel(selectedCharacter.id);
+      const currentThreshold = Math.floor(currentLevel / 10) * 10;
+      
+      setShowAffectionAnimation(true);
+      
+      await increaseAffection.mutateAsync(
+        { characterId: selectedCharacter.id, amount: 1 },
+        {
+          onSuccess: (result) => {
+            // レベルアップ（10の倍数到達）を検知
+            if (result.threshold_reached > currentThreshold) {
+              const levelUpMessage = selectedCharacter.levelUpMessages[result.threshold_reached];
+              if (levelUpMessage) {
+                setLevelUpInfo({
+                  level: result.threshold_reached,
+                  message: levelUpMessage,
+                });
+              }
+            }
+          },
+        }
+      );
     } catch (error) {
       // エラーは useAiChat フックでトーストで表示される
     }
@@ -233,6 +263,23 @@ export default function AiChat() {
       </div>
 
       <CrisisDialog open={showCrisisDialog} onOpenChange={setShowCrisisDialog} />
+      
+      {showAffectionAnimation && (
+        <AffectionIncreaseAnimation 
+          amount={1} 
+          onComplete={() => setShowAffectionAnimation(false)} 
+        />
+      )}
+      
+      {levelUpInfo && (
+        <AffectionLevelUpDialog
+          character={selectedCharacter}
+          level={levelUpInfo.level}
+          message={levelUpInfo.message}
+          open={!!levelUpInfo}
+          onOpenChange={(open) => !open && setLevelUpInfo(null)}
+        />
+      )}
     </div>
   );
 }
