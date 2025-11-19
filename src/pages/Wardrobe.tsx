@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { RarityBadge } from "@/components/RarityBadge";
-import { Lock, Sparkles } from "lucide-react";
+import { Lock, Sparkles, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 type Category = "outfit" | "accessory" | "background" | "effect";
 
 export default function Wardrobe() {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<Category>("outfit");
   const queryClient = useQueryClient();
 
@@ -85,6 +87,18 @@ export default function Wardrobe() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-purple-50 p-6">
       <div className="max-w-7xl mx-auto">
+        {/* ホームボタン */}
+        <div className="mb-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/")}
+            className="hover:bg-secondary/50"
+          >
+            <Home className="h-5 w-5" />
+          </Button>
+        </div>
+
         <h1 className="text-4xl font-bold text-center mb-8 text-primary">
           <Sparkles className="inline mr-2" />
           着せ替え

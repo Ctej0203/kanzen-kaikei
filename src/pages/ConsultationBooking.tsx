@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import { Video, MessageSquare, Calendar as CalendarIcon, Clock } from "lucide-react";
+import { Video, MessageSquare, Calendar as CalendarIcon, Clock, Home } from "lucide-react";
 
 const ConsultationBooking = () => {
   const navigate = useNavigate();
@@ -89,10 +89,11 @@ const ConsultationBooking = () => {
         <div className="container mx-auto px-4 py-4 flex items-center">
           <Button
             variant="ghost"
-            onClick={() => navigate("/online-consultation")}
+            onClick={() => navigate("/")}
             className="mr-2"
           >
-            ← 戻る
+            <Home className="h-5 w-5 mr-2" />
+            ホーム
           </Button>
           <h1 className="text-xl font-bold">予約日時を選択</h1>
         </div>

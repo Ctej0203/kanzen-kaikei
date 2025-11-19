@@ -8,7 +8,8 @@ import { CoinIcon } from "@/components/CoinIcon";
 import { RarityBadge } from "@/components/RarityBadge";
 import { useCoins } from "@/hooks/useCoins";
 import { useGacha } from "@/hooks/useGacha";
-import { Sparkles, Info, Gift } from "lucide-react";
+import { Sparkles, Info, Gift, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface GachaResult {
   item_id: string;
@@ -19,6 +20,7 @@ interface GachaResult {
 }
 
 export default function Gacha() {
+  const navigate = useNavigate();
   const { totalCoins } = useCoins();
   const gachaMutation = useGacha();
   const [results, setResults] = useState<GachaResult[]>([]);
@@ -92,6 +94,18 @@ export default function Gacha() {
       </div>
 
       <div className="max-w-4xl mx-auto relative z-10">
+        {/* ホームボタン */}
+        <div className="mb-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/")}
+            className="text-white hover:bg-white/10"
+          >
+            <Home className="h-5 w-5" />
+          </Button>
+        </div>
+
         {/* ヘッダー */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-4">
