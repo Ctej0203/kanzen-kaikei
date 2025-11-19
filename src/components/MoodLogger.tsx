@@ -73,10 +73,10 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
       // ストリークデータを更新
       await refetchStreak();
 
-      // Increase affection for current character
+      // Increase affection for current character (+2 for diary record)
       await increaseAffection.mutateAsync({
         characterId: selectedCharacter.id,
-        amount: 1,
+        amount: 2,
       });
 
       setShowAffectionAnimation(true);
@@ -110,7 +110,7 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
     <>
       {showAffectionAnimation && (
         <AffectionIncreaseAnimation
-          amount={1}
+          amount={2}
           onComplete={() => setShowAffectionAnimation(false)}
         />
       )}
