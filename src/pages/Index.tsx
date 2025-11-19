@@ -259,12 +259,12 @@ const Index = () => {
               <CardHeader className="p-6">
                 <div className="flex items-center gap-4 justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Video className="w-7 h-7 text-primary" />
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Video className="w-8 h-8 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-2xl">オンライン診療</CardTitle>
-                      <CardDescription className="text-base">専門家にオンラインで相談できます</CardDescription>
+                      <CardTitle className="text-3xl">オンライン診療</CardTitle>
+                      <CardDescription className="text-lg">専門家にオンラインで相談できます</CardDescription>
                     </div>
                   </div>
                   <img 
