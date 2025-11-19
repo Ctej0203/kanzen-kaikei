@@ -18,7 +18,7 @@ import { useCharacter } from "@/hooks/useCharacter";
 import { AffectionDisplay } from "@/components/AffectionDisplay";
 import { AffectionIncreaseAnimation } from "@/components/AffectionIncreaseAnimation";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
-import curaDoctor from "@/assets/cura-doctor.png";
+import curaDoctor from "@/assets/cura-doctor.jpg";
 
 const Index = () => {
   const navigate = useNavigate();
