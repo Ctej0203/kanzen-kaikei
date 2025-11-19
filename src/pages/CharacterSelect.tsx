@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { characters, CharacterId } from "@/lib/characterData";
 import { useCharacter } from "@/hooks/useCharacter";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
-import { Heart } from "lucide-react";
+import { Heart, Home } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 const CharacterSelect = () => {
@@ -32,7 +32,19 @@ const CharacterSelect = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-accent/20 via-background to-secondary/30">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-accent/20 via-background to-secondary/30 relative">
+      {/* ホームボタン */}
+      <div className="absolute top-4 left-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate("/")}
+          className="hover:bg-secondary/50"
+        >
+          <Home className="h-5 w-5" />
+        </Button>
+      </div>
+
       {/* Title */}
       <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center">
         キャラクターを選ぼう！

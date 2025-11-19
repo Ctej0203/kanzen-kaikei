@@ -5,11 +5,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CoinIcon } from "@/components/CoinIcon";
 import { useCoins } from "@/hooks/useCoins";
 import { Button } from "@/components/ui/button";
-import { Gift, ShoppingCart, Clock } from "lucide-react";
+import { Gift, ShoppingCart, Clock, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 
 export default function Coins() {
+  const navigate = useNavigate();
   const { totalCoins, freeCoins, paidCoins, isLoading } = useCoins();
 
   const { data: transactions } = useQuery({
@@ -41,6 +43,18 @@ export default function Coins() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-orange-50 p-6">
       <div className="max-w-4xl mx-auto">
+        {/* ホームボタン */}
+        <div className="mb-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/")}
+            className="hover:bg-secondary/50"
+          >
+            <Home className="h-5 w-5" />
+          </Button>
+        </div>
+
         <h1 className="text-4xl font-bold text-center mb-8 text-primary">
           <CoinIcon size={40} className="inline mr-2" />
           コイン

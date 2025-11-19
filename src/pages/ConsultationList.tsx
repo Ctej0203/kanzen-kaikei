@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import { Video, MessageSquare, Calendar, Clock, AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { Video, MessageSquare, Calendar, Clock, AlertCircle, CheckCircle, XCircle, Home } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -124,10 +124,11 @@ const ConsultationList = () => {
           <div className="flex items-center">
             <Button
               variant="ghost"
-              onClick={() => navigate("/online-consultation")}
+              onClick={() => navigate("/")}
               className="mr-2"
             >
-              ← 戻る
+              <Home className="h-5 w-5 mr-2" />
+              ホーム
             </Button>
             <h1 className="text-xl font-bold">予約一覧</h1>
           </div>

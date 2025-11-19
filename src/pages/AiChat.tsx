@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
@@ -13,7 +14,7 @@ import { AffectionIncreaseAnimation } from "@/components/AffectionIncreaseAnimat
 import { AffectionLevelUpDialog } from "@/components/AffectionLevelUpDialog";
 import { useCharacter } from "@/hooks/useCharacter";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
-import { MessageCircle, Send, Loader2 } from "lucide-react";
+import { MessageCircle, Send, Loader2, Home } from "lucide-react";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 
@@ -24,6 +25,7 @@ interface Message {
 }
 
 export default function AiChat() {
+  const navigate = useNavigate();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [showCrisisDialog, setShowCrisisDialog] = useState(false);
@@ -151,14 +153,22 @@ export default function AiChat() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-purple-50 p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
-          {isPremium && <PremiumBadge />}
-        </div>
+      <div className="flex items-center justify-between mb-6">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate("/")}
+          className="hover:bg-secondary/50"
+        >
+          <Home className="h-5 w-5" />
+        </Button>
+        {isPremium && <PremiumBadge />}
+      </div>
 
-        <AffectionDisplay />
+      <AffectionDisplay />
 
-        {/* ヘッダー */}
-        <div className="text-center mb-6">
+      {/* ヘッダー */}
+      <div className="text-center mb-6">
           <div className="flex items-center justify-center gap-3 mb-2">
             <img 
               src={selectedCharacter.image} 

@@ -2,11 +2,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PremiumBadge } from "@/components/PremiumBadge";
 import { usePremiumStatus } from "@/hooks/usePremiumStatus";
-import { Crown, Check, MessageCircle, Sparkles, TrendingUp, Headphones } from "lucide-react";
+import { Crown, Check, MessageCircle, Sparkles, TrendingUp, Headphones, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 
 export default function Premium() {
+  const navigate = useNavigate();
   const { isPremium, plan, periodEnd } = usePremiumStatus();
 
   const features = [
@@ -37,6 +39,18 @@ export default function Premium() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-900 via-pink-900 to-purple-900 p-6">
       <div className="max-w-4xl mx-auto">
+        {/* ホームボタン */}
+        <div className="mb-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate("/")}
+            className="text-white hover:bg-white/10"
+          >
+            <Home className="h-5 w-5" />
+          </Button>
+        </div>
+        
         {/* ヒーローセクション */}
         <div className="text-center mb-12 text-white">
           <Crown className="mx-auto mb-4" size={64} />
