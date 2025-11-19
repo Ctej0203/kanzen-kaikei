@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -32,7 +33,18 @@ serve(async (req) => {
   }
 
   try {
-    const { user_id, mood_score, memo, character_id = "cura" } = await req.json();
+    // Validate input
+    const diarySchema = z.object({
+      user_id: z.string().uuid("Invalid user ID"),
+      mood_score: z.number().int("Mood score must be an integer").min(1, "Mood score must be at least 1").max(10, "Mood score must be at most 10"),
+      memo: z.string().trim().max(1000, "Memo too long (max 1000 characters)").optional(),
+      character_id: z.enum(["cura", "suu", "luno"]).default("cura")
+    });
+
+    const requestBody = await req.json();
+    const validated = diarySchema.parse(requestBody);
+    const { user_id, mood_score, memo, character_id } = validated;
+    
     console.log("Analyzing diary:", { user_id, mood_score, memo, character_id });
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -132,11 +144,28 @@ JSON形式で応答してください：
     );
   } catch (error) {
     console.error("Error in analyze-diary function:", error);
+    
+    // Handle validation errors
+    if (error instanceof z.ZodError) {
+      return new Response(
+        JSON.stringify({ 
+          error: "入力データが無効です。",
+          details: error.errors.map(e => e.message).join(", "),
+          ai_score: null,
+          ai_comment: null
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
+    
     return new Response(
       JSON.stringify({ 
-        error: error instanceof Error ? error.message : "Unknown error",
+        error: "分析中にエラーが発生しました。後でもう一度お試しください。",
         ai_score: null,
-        ai_comment: "分析中にエラーが発生しました。"
+        ai_comment: null
       }),
       {
         status: 500,
