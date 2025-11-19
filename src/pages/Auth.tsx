@@ -15,6 +15,7 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     const checkSession = async () => {
@@ -28,6 +29,16 @@ const Auth = () => {
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!isLogin && password !== confirmPassword) {
+      toast({
+        title: "エラー",
+        description: "パスワードが一致しません",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoading(true);
 
     try {
@@ -56,10 +67,9 @@ const Auth = () => {
         if (error) throw error;
         
         toast({
-          title: "アカウントを作成しました",
-          description: "ログインしてご利用ください",
+          title: "確認メールを送信しました",
+          description: "メールアドレスを確認してアカウントを有効化してください",
         });
-        navigate("/");
       }
     } catch (error: any) {
       toast({
@@ -110,6 +120,21 @@ const Auth = () => {
                 minLength={6}
               />
             </div>
+            {!isLogin && (
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">パスワード（確認）</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  disabled={loading}
+                  minLength={6}
+                />
+              </div>
+            )}
             <Button type="submit" className="w-full shadow-lg hover:shadow-xl transition-all hover-lift font-bold" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {isLogin ? "✨ ログイン" : "✨ アカウント作成"}
