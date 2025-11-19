@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 import { toast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mic, MicOff } from "lucide-react";
 import { useRecordStreak } from "@/hooks/useRecordStreak";
 import { UnifiedCalendar } from "./UnifiedCalendar";
 import { useCharacter } from "@/hooks/useCharacter";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
 import { AffectionIncreaseAnimation } from "./AffectionIncreaseAnimation";
+import { useVoiceRecording } from "@/hooks/useVoiceRecording";
 
 interface MoodLoggerProps {
   onRecordSuccess?: () => void;
@@ -25,6 +26,20 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
   const { refetch: refetchStreak } = useRecordStreak();
   const { selectedCharacter } = useCharacter();
   const { increaseAffection } = useCharacterAffection();
+  const { isRecording, isProcessing, startRecording, stopRecording } = useVoiceRecording();
+
+  const handleVoiceInput = async () => {
+    if (isRecording) {
+      try {
+        const text = await stopRecording();
+        setMemo(prev => prev ? `${prev}\n${text}` : text);
+      } catch (error) {
+        console.error('Error stopping recording:', error);
+      }
+    } else {
+      await startRecording();
+    }
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -143,13 +158,32 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
 
           <div className="space-y-2">
             <label className="text-sm font-medium">今日の日記（AIが分析します）</label>
-            <Textarea
-              placeholder="今日はどんな1日でしたか？嬉しかったこと、辛かったこと、何でも書いてみてね..."
-              value={memo}
-              onChange={(e) => setMemo(e.target.value)}
-              rows={5}
-              className="resize-none border-2"
-            />
+            <div className="relative">
+              <Textarea
+                placeholder="今日はどんな1日でしたか？嬉しかったこと、辛かったこと、何でも書いてみてね..."
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
+                rows={5}
+                className="resize-none border-2 pr-12"
+                disabled={isProcessing}
+              />
+              <Button
+                type="button"
+                size="icon"
+                variant={isRecording ? "destructive" : "secondary"}
+                className="absolute right-2 top-2"
+                onClick={handleVoiceInput}
+                disabled={isProcessing}
+              >
+                {isProcessing ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : isRecording ? (
+                  <MicOff className="h-4 w-4" />
+                ) : (
+                  <Mic className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
 
           <Button 

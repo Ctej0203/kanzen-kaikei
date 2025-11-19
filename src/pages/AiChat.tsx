@@ -14,7 +14,8 @@ import { AffectionIncreaseAnimation } from "@/components/AffectionIncreaseAnimat
 import { AffectionLevelUpDialog } from "@/components/AffectionLevelUpDialog";
 import { useCharacter } from "@/hooks/useCharacter";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
-import { MessageCircle, Send, Loader2, Home } from "lucide-react";
+import { useVoiceRecording } from "@/hooks/useVoiceRecording";
+import { MessageCircle, Send, Loader2, Home, Mic, MicOff } from "lucide-react";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 
@@ -36,6 +37,20 @@ export default function AiChat() {
   const { isPremium } = usePremiumStatus();
   const { selectedCharacter } = useCharacter();
   const { increaseAffection, getAffectionLevel } = useCharacterAffection();
+  const { isRecording, isProcessing, startRecording, stopRecording } = useVoiceRecording();
+
+  const handleVoiceInput = async () => {
+    if (isRecording) {
+      try {
+        const text = await stopRecording();
+        setInput(prev => prev ? `${prev} ${text}` : text);
+      } catch (error) {
+        console.error('Error stopping recording:', error);
+      }
+    } else {
+      await startRecording();
+    }
+  };
 
   // 会話数をカウント
   const { data: conversationCount } = useQuery({
@@ -261,9 +276,23 @@ export default function AiChat() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
-                disabled={aiChatMutation.isPending || (!isPremium && remainingMessages === 0)}
+                disabled={aiChatMutation.isPending || (!isPremium && remainingMessages === 0) || isProcessing}
                 className="flex-1"
               />
+              <Button
+                onClick={handleVoiceInput}
+                disabled={aiChatMutation.isPending || (!isPremium && remainingMessages === 0)}
+                size="icon"
+                variant={isRecording ? "destructive" : "secondary"}
+              >
+                {isProcessing ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : isRecording ? (
+                  <MicOff size={20} />
+                ) : (
+                  <Mic size={20} />
+                )}
+              </Button>
               <Button
                 onClick={handleSend}
                 disabled={!input.trim() || aiChatMutation.isPending || (!isPremium && remainingMessages === 0)}
