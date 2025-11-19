@@ -270,7 +270,7 @@ const Index = () => {
                   <img 
                     src={curaDoctor} 
                     alt="Cura Doctor" 
-                    className="w-24 h-24 object-contain flex-shrink-0"
+                    className="w-32 h-32 object-contain flex-shrink-0"
                   />
                 </div>
               </CardHeader>
