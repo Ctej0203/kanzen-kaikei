@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { HomehomeCard } from "@/components/HomehomeCard";
 import { MoodLogger } from "@/components/MoodLogger";
 import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
-import { LogOut, Settings, FileText, Heart, Video, Wind } from "lucide-react";
+import { LogOut, Settings, FileText, Heart, Video, Wind, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { CoinBalance } from "@/components/CoinBalance";
@@ -157,6 +157,9 @@ const Index = () => {
               </Button>
               <Button variant="ghost" size="icon" onClick={() => navigate("/records")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all">
                 <FileText className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={() => navigate("/ai-chat")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all" title="AI会話">
+                <MessageSquare className="h-5 w-5" />
               </Button>
               <Button variant="ghost" size="icon" onClick={() => navigate("/settings")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all">
                 <Settings className="h-5 w-5" />
