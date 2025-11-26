@@ -16,6 +16,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [referralCode, setReferralCode] = useState("");
 
   useEffect(() => {
     const checkSession = async () => {
@@ -56,7 +57,7 @@ const Auth = () => {
         });
         navigate("/");
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -65,6 +66,18 @@ const Auth = () => {
         });
         
         if (error) throw error;
+        
+        // Process referral code if provided
+        if (referralCode.trim() && data.user) {
+          const { error: referralError } = await supabase.rpc("process_referral", {
+            p_referred_user_id: data.user.id,
+            p_referral_code: referralCode.trim().toUpperCase(),
+          });
+          
+          if (referralError) {
+            console.error("Referral processing error:", referralError);
+          }
+        }
         
         toast({
           title: "確認メールを送信しました",
@@ -121,19 +134,33 @@ const Auth = () => {
               />
             </div>
             {!isLogin && (
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">パスワード（確認）</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  disabled={loading}
-                  minLength={6}
-                />
-              </div>
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">パスワード（確認）</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    disabled={loading}
+                    minLength={6}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="referralCode">紹介コード（任意）</Label>
+                  <Input
+                    id="referralCode"
+                    type="text"
+                    placeholder="紹介コードをお持ちの方は入力"
+                    value={referralCode}
+                    onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                    disabled={loading}
+                    maxLength={8}
+                  />
+                </div>
+              </>
             )}
             <Button type="submit" className="w-full shadow-lg hover:shadow-xl transition-all hover-lift font-bold" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
