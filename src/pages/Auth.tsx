@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import curaCharacter from "@/assets/cura-character.png";
+import loginCharacters from "@/assets/login-characters.png";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -99,6 +100,13 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background p-4">
       <Card className="w-full max-w-md shadow-xl hover:shadow-2xl transition-shadow border-2 border-primary/20">
         <CardHeader className="text-center">
+          <div className="flex justify-center mb-4">
+            <img 
+              src={loginCharacters} 
+              alt="Curely Characters" 
+              className="w-48 h-48 object-contain animate-fade-in"
+            />
+          </div>
           <CardTitle className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
             ✨ Curely
           </CardTitle>
