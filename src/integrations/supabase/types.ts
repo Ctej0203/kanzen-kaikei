@@ -354,6 +354,7 @@ export type Database = {
           login_count: number | null
           needs_followup: boolean | null
           onboarding_completed: boolean | null
+          referral_code: string | null
           selected_character: string | null
           triggers: string | null
           updated_at: string
@@ -376,6 +377,7 @@ export type Database = {
           login_count?: number | null
           needs_followup?: boolean | null
           onboarding_completed?: boolean | null
+          referral_code?: string | null
           selected_character?: string | null
           triggers?: string | null
           updated_at?: string
@@ -398,6 +400,7 @@ export type Database = {
           login_count?: number | null
           needs_followup?: boolean | null
           onboarding_completed?: boolean | null
+          referral_code?: string | null
           selected_character?: string | null
           triggers?: string | null
           updated_at?: string
@@ -429,6 +432,30 @@ export type Database = {
           record_history?: Json | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          created_at: string | null
+          id: string
+          referred_user_id: string
+          referrer_user_id: string
+          reward_given: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          referred_user_id: string
+          referrer_user_id: string
+          reward_given?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          referred_user_id?: string
+          referrer_user_id?: string
+          reward_given?: boolean | null
         }
         Relationships: []
       }
@@ -574,6 +601,7 @@ export type Database = {
           is_new_day: boolean
         }[]
       }
+      generate_referral_code: { Args: never; Returns: string }
       increase_character_affection: {
         Args: { p_amount?: number; p_character_id: string; p_user_id: string }
         Returns: {
@@ -590,6 +618,10 @@ export type Database = {
           item_id: string
           rarity: string
         }[]
+      }
+      process_referral: {
+        Args: { p_referral_code: string; p_referred_user_id: string }
+        Returns: undefined
       }
       spend_coins: {
         Args: { p_amount: number; p_source: string; p_user_id: string }

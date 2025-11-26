@@ -5,6 +5,7 @@ import { ArrowLeft, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { EmergencyContacts } from "@/components/EmergencyContacts";
+import { ReferralSection } from "@/components/ReferralSection";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -57,6 +58,8 @@ const Settings = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-2xl space-y-6">
+        <ReferralSection />
+        
         <EmergencyContacts />
         
         <Card>
