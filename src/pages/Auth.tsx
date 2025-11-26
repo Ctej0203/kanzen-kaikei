@@ -103,7 +103,7 @@ const Auth = () => {
             ✨ Curely
           </CardTitle>
           <CardDescription className="text-base font-medium">
-            💖 パニック障害サポートアプリ
+            メンタルケアを
           </CardDescription>
         </CardHeader>
         <CardContent>
