@@ -104,7 +104,7 @@ const Auth = () => {
             <img 
               src={loginCharacters} 
               alt="Curely Characters" 
-              className="w-48 h-48 object-contain animate-fade-in"
+              className="w-96 h-96 object-contain animate-fade-in"
             />
           </div>
           <CardTitle className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
