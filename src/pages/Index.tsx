@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { HomehomeCard } from "@/components/HomehomeCard";
 import { MoodLogger } from "@/components/MoodLogger";
 import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
-import { LogOut, Settings, FileText, Heart, Video, Wind, MessageSquare, ShoppingBag } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LogOut, Settings, FileText, Heart, Video, Wind, ShoppingBag } from "lucide-react";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { CoinBalance } from "@/components/CoinBalance";
 import { LoginBonusPopup } from "@/components/LoginBonusPopup";
@@ -18,6 +18,7 @@ import { useCharacter } from "@/hooks/useCharacter";
 import { AffectionDisplay } from "@/components/AffectionDisplay";
 import { AffectionIncreaseAnimation } from "@/components/AffectionIncreaseAnimation";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
+import { ChatSection } from "@/components/ChatSection";
 import curaDoctor from "@/assets/cura-doctor.jpg";
 const Index = () => {
   const navigate = useNavigate();
@@ -147,10 +148,7 @@ const Index = () => {
               <Button variant="ghost" size="icon" onClick={() => navigate("/records")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all">
                 <FileText className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => navigate("/ai-chat")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all" title="AI会話">
-                <MessageSquare className="h-5 w-5" />
-              </Button>
-              <Button 
+              <Button
                 variant="ghost" 
                 size="icon" 
                 onClick={() => window.open("https://curelyshop-fk6cmnpx.manus.space", "_blank")} 
@@ -190,6 +188,14 @@ const Index = () => {
 
           <section className="hover-lift">
             <HomehomeCard />
+          </section>
+
+          <section className="hover-lift">
+            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+              <span className="text-3xl">💬</span>
+              おしゃべり
+            </h2>
+            <ChatSection />
           </section>
 
           <section className="hover-lift cursor-pointer" onClick={() => navigate("/online-consultation")}>
