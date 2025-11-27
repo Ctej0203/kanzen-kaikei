@@ -12,6 +12,9 @@ import { useCharacter } from "@/hooks/useCharacter";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
 import { AffectionIncreaseAnimation } from "./AffectionIncreaseAnimation";
 import { useVoiceRecording } from "@/hooks/useVoiceRecording";
+import moodSad from "@/assets/mood-sad.png";
+import moodNormal from "@/assets/mood-normal.png";
+import moodHappy from "@/assets/mood-happy.png";
 
 interface MoodLoggerProps {
   onRecordSuccess?: () => void;
@@ -19,6 +22,7 @@ interface MoodLoggerProps {
 
 export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
   const [moodScore, setMoodScore] = useState([5]);
+  const [moodExpression, setMoodExpression] = useState<string>("normal");
   const [memo, setMemo] = useState("");
   const [loading, setLoading] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -27,6 +31,12 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
   const { selectedCharacter } = useCharacter();
   const { increaseAffection } = useCharacterAffection();
   const { isRecording, isProcessing, startRecording, stopRecording } = useVoiceRecording();
+
+  const moodExpressions = [
+    { id: "sad", label: "悲しい", image: moodSad },
+    { id: "normal", label: "普通", image: moodNormal },
+    { id: "happy", label: "楽しい", image: moodHappy },
+  ];
 
   const handleVoiceInput = async () => {
     if (isRecording) {
@@ -78,6 +88,7 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
         .insert({
           user_id: user.id,
           mood_score: moodScore[0],
+          mood_expression: moodExpression,
           memo: memo || null,
           ai_score: aiScore,
           ai_comment: aiComment,
@@ -102,6 +113,7 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
       });
       
       setMoodScore([5]);
+      setMoodExpression("normal");
       setMemo("");
       
       // Show affection animation first, then calendar
@@ -154,6 +166,36 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
               step={1}
               className="w-full"
             />
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-sm font-medium">今日の気分</label>
+            <div className="flex justify-center gap-4">
+              {moodExpressions.map((expression) => (
+                <button
+                  key={expression.id}
+                  type="button"
+                  onClick={() => setMoodExpression(expression.id)}
+                  className={`relative w-20 h-20 rounded-full transition-all hover:scale-105 ${
+                    moodExpression === expression.id
+                      ? "ring-4 ring-primary shadow-lg"
+                      : "ring-2 ring-border hover:ring-accent"
+                  }`}
+                  aria-label={expression.label}
+                >
+                  <img
+                    src={expression.image}
+                    alt={expression.label}
+                    className="w-full h-full object-contain"
+                  />
+                  {moodExpression === expression.id && (
+                    <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-medium text-primary whitespace-nowrap">
+                      {expression.label}
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="space-y-2">

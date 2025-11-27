@@ -502,6 +502,7 @@ export type Database = {
           created_at: string
           id: string
           memo: string | null
+          mood_expression: string | null
           mood_score: number
           recorded_at: string
           tags: string[] | null
@@ -513,6 +514,7 @@ export type Database = {
           created_at?: string
           id?: string
           memo?: string | null
+          mood_expression?: string | null
           mood_score: number
           recorded_at?: string
           tags?: string[] | null
@@ -524,6 +526,7 @@ export type Database = {
           created_at?: string
           id?: string
           memo?: string | null
+          mood_expression?: string | null
           mood_score?: number
           recorded_at?: string
           tags?: string[] | null
