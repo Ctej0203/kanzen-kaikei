@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,7 @@ export function ChatSection() {
   const [showAffectionAnimation, setShowAffectionAnimation] = useState(false);
   const [levelUpInfo, setLevelUpInfo] = useState<{ level: number; message: string } | null>(null);
   
+  const queryClient = useQueryClient();
   const aiChatMutation = useAiChat();
   const { isPremium } = usePremiumStatus();
   const { selectedCharacter } = useCharacter();
@@ -86,6 +87,9 @@ export function ChatSection() {
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+      
+      // レスポンス数を更新
+      queryClient.invalidateQueries({ queryKey: ["ai-conversation-count"] });
 
       if (result.hasCrisis) {
         setShowCrisisDialog(true);
