@@ -8,10 +8,12 @@ import { toast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import curaCharacter from "@/assets/cura-character.png";
+import { getMoodExpressionById } from "@/lib/moodExpressions";
 
 interface SymptomRecord {
   id: string;
   mood_score: number;
+  mood_expression: string | null;
   memo: string | null;
   recorded_at: string;
 }
@@ -101,14 +103,23 @@ const Records = () => {
             {records.map((record) => (
               <Card key={record.id}>
                 <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg">
-                        調子: {record.mood_score}/10
-                      </CardTitle>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {format(new Date(record.recorded_at), "yyyy年MM月dd日 HH:mm", { locale: ja })}
-                      </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3 flex-1">
+                      {record.mood_expression && getMoodExpressionById(record.mood_expression) && (
+                        <img
+                          src={getMoodExpressionById(record.mood_expression)!.image}
+                          alt={getMoodExpressionById(record.mood_expression)!.label}
+                          className="w-12 h-12 object-cover rounded-full ring-2 ring-border"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <CardTitle className="text-lg">
+                          調子: {record.mood_score}/10
+                        </CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {format(new Date(record.recorded_at), "yyyy年MM月dd日 HH:mm", { locale: ja })}
+                        </p>
+                      </div>
                     </div>
                     <Button
                       variant="ghost"
