@@ -1,7 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -41,7 +40,7 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const openaiApiKey = Deno.env.get("OPENAI_API_KEY")!;
+    const lovableApiKey = Deno.env.get("LOVABLE_API_KEY")!;
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -144,17 +143,17 @@ ${conversationsContext}
 - メンタルヘルスに配慮し、支援的な姿勢を保つ
 - 友達と話すような自然な会話を心がけ、ロボットのような応答は避ける`;
 
-    // OpenAI GPT-4oを呼び出し
+    // Lovable AI Gatewayを呼び出し
     const aiResponse = await fetch(
-      "https://api.openai.com/v1/chat/completions",
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${openaiApiKey}`,
+          Authorization: `Bearer ${lovableApiKey}`,
         },
         body: JSON.stringify({
-          model: "gpt-4o",
+          model: "google/gemini-2.5-flash",
           messages: [
             {
               role: "system",
@@ -165,15 +164,32 @@ ${conversationsContext}
               content: message,
             },
           ],
-          temperature: 0.8,
-          max_tokens: 500,
         }),
       }
     );
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
-      console.error("OpenAI API error:", errorText);
+      console.error("Lovable AI Gateway error:", aiResponse.status, errorText);
+      
+      if (aiResponse.status === 429) {
+        return new Response(
+          JSON.stringify({ error: "レート制限に達しました。少し時間をおいて再試行してください。" }),
+          {
+            status: 429,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+      if (aiResponse.status === 402) {
+        return new Response(
+          JSON.stringify({ error: "AI機能の利用上限に達しました。" }),
+          {
+            status: 402,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
       throw new Error("Failed to get AI response");
     }
 
