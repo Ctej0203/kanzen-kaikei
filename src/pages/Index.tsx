@@ -175,6 +175,14 @@ const Index = () => {
           </section>
 
           <section className="hover-lift">
+            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+              <span className="text-3xl">💬</span>
+              おしゃべり
+            </h2>
+            <ChatSection />
+          </section>
+
+          <section className="hover-lift">
             <MentalScoreDisplay />
           </section>
 
@@ -184,14 +192,6 @@ const Index = () => {
               今日の日記
             </h2>
             <MoodLogger />
-          </section>
-
-          <section className="hover-lift">
-            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <span className="text-3xl">💬</span>
-              おしゃべり
-            </h2>
-            <ChatSection />
           </section>
 
           <section className="hover-lift cursor-pointer" onClick={() => navigate("/online-consultation")}>
