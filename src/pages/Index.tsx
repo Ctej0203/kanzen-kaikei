@@ -187,10 +187,6 @@ const Index = () => {
           </section>
 
           <section className="hover-lift">
-            <HomehomeCard />
-          </section>
-
-          <section className="hover-lift">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
               <span className="text-3xl">💬</span>
               おしゃべり
@@ -215,6 +211,10 @@ const Index = () => {
                 </div>
               </CardHeader>
             </Card>
+          </section>
+
+          <section className="hover-lift">
+            <HomehomeCard />
           </section>
         </div>
       </main>
