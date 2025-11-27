@@ -186,7 +186,7 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
                   <img
                     src={expression.image}
                     alt={expression.label}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover"
                   />
                   {moodExpression === expression.id && (
                     <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-medium text-primary whitespace-nowrap">
