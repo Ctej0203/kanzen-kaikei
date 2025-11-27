@@ -17,7 +17,7 @@ export const AffectionDisplay = () => {
         <div className="flex items-center gap-2">
           <Heart className="w-5 h-5 text-primary fill-primary" />
           <span className="text-sm font-bold text-foreground">
-            {selectedCharacter.name}の好感度
+            {selectedCharacter.name}とのなかよしスコア
           </span>
         </div>
         <span className="text-2xl font-bold text-primary">
