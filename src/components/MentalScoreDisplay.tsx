@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useCharacter } from "@/hooks/useCharacter";
 
-export const MentalScoreDisplay = () => {
+interface MentalScoreDisplayProps {
+  refreshTrigger?: number;
+}
+
+export const MentalScoreDisplay = ({ refreshTrigger }: MentalScoreDisplayProps) => {
   const [latestScore, setLatestScore] = useState<number | null>(null);
   const [latestComment, setLatestComment] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const { selectedCharacter } = useCharacter();
 
-  useEffect(() => {
-    fetchLatestScore();
-  }, []);
-
-  const fetchLatestScore = async () => {
+  const fetchLatestScore = useCallback(async () => {
+    setLoading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -38,7 +39,11 @@ export const MentalScoreDisplay = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchLatestScore();
+  }, [fetchLatestScore, refreshTrigger]);
 
   const getCharacterImage = () => {
     return selectedCharacter.image;

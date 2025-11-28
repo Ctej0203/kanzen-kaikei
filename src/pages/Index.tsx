@@ -33,6 +33,7 @@ const Index = () => {
   const [calendarTab, setCalendarTab] = useState<"login" | "record">("login");
   const [shouldShowLoginCalendar, setShouldShowLoginCalendar] = useState(false);
   const [showAffectionAnimation, setShowAffectionAnimation] = useState(false);
+  const [scoreRefreshTrigger, setScoreRefreshTrigger] = useState(0);
   const {
     claimBonus
   } = useLoginBonus();
@@ -183,7 +184,7 @@ const Index = () => {
           </section>
 
           <section className="hover-lift">
-            <MentalScoreDisplay />
+            <MentalScoreDisplay refreshTrigger={scoreRefreshTrigger} />
           </section>
 
           <section className="hover-lift">
@@ -191,7 +192,7 @@ const Index = () => {
               <span className="text-3xl">📝</span>
               今日の日記
             </h2>
-            <MoodLogger />
+            <MoodLogger onRecordSuccess={() => setScoreRefreshTrigger(prev => prev + 1)} />
           </section>
 
           <section className="hover-lift cursor-pointer" onClick={() => navigate("/online-consultation")}>
