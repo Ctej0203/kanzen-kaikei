@@ -36,7 +36,7 @@ serve(async (req) => {
     // Validate input
     const diarySchema = z.object({
       user_id: z.string().uuid("Invalid user ID"),
-      mood_score: z.number().int("Mood score must be an integer").min(1, "Mood score must be at least 1").max(10, "Mood score must be at most 10"),
+      mood_score: z.number().int("Mood score must be an integer").min(0, "Mood score must be at least 0").max(10, "Mood score must be at most 10"),
       memo: z.string().trim().max(1000, "Memo too long (max 1000 characters)").optional(),
       character_id: z.enum(["cura", "suu", "luno"]).default("cura")
     });
