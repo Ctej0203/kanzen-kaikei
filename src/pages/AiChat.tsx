@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -38,6 +38,45 @@ export default function AiChat() {
   const { selectedCharacter } = useCharacter();
   const { increaseAffection, getAffectionLevel } = useCharacterAffection();
   const { isRecording, isProcessing, startRecording, stopRecording } = useVoiceRecording();
+
+  // 会話履歴を読み込んでメッセージ欄に表示
+  const { data: conversationHistory } = useQuery({
+    queryKey: ["ai-conversation-history"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [] as Array<{ id: string; message: string; response: string; created_at: string }>;
+
+      const { data, error } = await supabase
+        .from("ai_conversations")
+        .select("id, message, response, created_at")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: true })
+        .limit(50);
+
+      if (error) throw error;
+      return (data || []) as Array<{ id: string; message: string; response: string; created_at: string }>;
+    },
+  });
+
+  // 履歴をメッセージ形式に変換
+  useEffect(() => {
+    if (conversationHistory && conversationHistory.length > 0) {
+      const loadedMessages: Message[] = [];
+      conversationHistory.forEach((conv) => {
+        loadedMessages.push({
+          role: "user",
+          content: conv.message,
+          timestamp: new Date(conv.created_at),
+        });
+        loadedMessages.push({
+          role: "assistant",
+          content: conv.response,
+          timestamp: new Date(conv.created_at),
+        });
+      });
+      setMessages(loadedMessages);
+    }
+  }, [conversationHistory]);
 
   const handleVoiceInput = async () => {
     if (isRecording) {
