@@ -66,9 +66,12 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
           
           if (functionError) {
             console.error("AI分析エラー:", functionError);
-          } else if (functionData) {
+          } else if (functionData && !functionData.error) {
             aiScore = functionData.score;
             aiComment = functionData.comment;
+            console.log("AI分析結果:", { aiScore, aiComment });
+          } else if (functionData?.error) {
+            console.error("AI分析エラー:", functionData.error);
           }
         } catch (aiError) {
           console.error("AI分析呼び出しエラー:", aiError);

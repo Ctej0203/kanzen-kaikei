@@ -49,7 +49,7 @@ serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const openaiApiKey = Deno.env.get("OPENAI_API_KEY")!;
+    const lovableApiKey = Deno.env.get("LOVABLE_API_KEY")!;
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -82,7 +82,7 @@ ${character.tone}
 日記の内容: ${memo || "メモなし"}
 
 【タスク】
-1. AI評価スコア（1-10）を付けてください
+1. AI評価スコア（1-100）を付けてください
    - 気分スコアとメモの内容を総合的に判断
    - ネガティブな内容でも、記録したこと自体を評価
    
@@ -94,20 +94,21 @@ ${character.tone}
 
 JSON形式で応答してください：
 {
-  "ai_score": number,
-  "ai_comment": "string"
+  "score": number,
+  "comment": "string"
 }`;
 
+    // Lovable AI Gatewayを呼び出し
     const aiResponse = await fetch(
-      "https://api.openai.com/v1/chat/completions",
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${openaiApiKey}`,
+          Authorization: `Bearer ${lovableApiKey}`,
         },
         body: JSON.stringify({
-          model: "gpt-4o",
+          model: "google/gemini-2.5-flash",
           messages: [
             {
               role: "user",
@@ -122,16 +123,18 @@ JSON形式で応答してください：
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
-      console.error("OpenAI API error:", errorText);
+      console.error("Lovable AI Gateway error:", aiResponse.status, errorText);
       throw new Error("Failed to get AI response");
     }
 
     const aiData = await aiResponse.json();
     const responseText = aiData.choices[0].message.content;
+    console.log("AI response:", responseText);
 
     // JSON レスポンスをパース
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
+      console.error("Failed to parse AI response, no JSON found:", responseText);
       throw new Error("Failed to parse AI response");
     }
 
@@ -152,8 +155,8 @@ JSON形式で応答してください：
         JSON.stringify({ 
           error: "入力データが無効です。",
           details: error.errors.map(e => e.message).join(", "),
-          ai_score: null,
-          ai_comment: null
+          score: null,
+          comment: null
         }),
         {
           status: 400,
@@ -165,8 +168,8 @@ JSON形式で応答してください：
     return new Response(
       JSON.stringify({ 
         error: "分析中にエラーが発生しました。後でもう一度お試しください。",
-        ai_score: null,
-        ai_comment: null
+        score: null,
+        comment: null
       }),
       {
         status: 500,
