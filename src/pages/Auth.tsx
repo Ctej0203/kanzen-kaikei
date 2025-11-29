@@ -34,6 +34,19 @@ const Auth = () => {
       }
     };
     checkSession();
+
+    // Listen for auth state changes (e.g., after OAuth callback)
+    const {
+      data: {
+        subscription
+      }
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        navigate("/");
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, [navigate]);
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
