@@ -155,7 +155,7 @@ const Index = () => {
                 variant="ghost" 
                 size="icon" 
                 onClick={() => window.open("https://curelyshop-fk6cmnpx.manus.space", "_blank")} 
-                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10 hidden sm:flex" 
+                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10" 
                 title="ECサイト"
               >
                 <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
