@@ -150,7 +150,7 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
         <CardContent className="space-y-4">
           <div className="space-y-3">
             <label className="text-sm font-medium">今日の気分</label>
-            <div className="flex justify-center gap-3 flex-wrap">
+            <div className="flex justify-center gap-4">
               {moodExpressions.map((expression) => (
                 <button
                   key={expression.id}
@@ -166,7 +166,7 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
                   <img
                     src={expression.image}
                     alt={expression.label}
-                    className="w-full h-full object-contain bg-transparent"
+                    className="w-full h-full object-cover"
                   />
                   {moodExpression === expression.id && (
                     <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs font-medium text-primary whitespace-nowrap">
