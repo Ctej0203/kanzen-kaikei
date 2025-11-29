@@ -4,6 +4,9 @@ import moodHappy from "@/assets/mood-happy.png";
 import moodLunoSad from "@/assets/mood-luno-sad.png";
 import moodLunoNormal from "@/assets/mood-luno-normal.png";
 import moodLunoHappy from "@/assets/mood-luno-happy.png";
+import moodCuraSad from "@/assets/mood-cura-sad.png";
+import moodCuraNormal from "@/assets/mood-cura-normal.png";
+import moodCuraHappy from "@/assets/mood-cura-happy.png";
 
 export const moodExpressions = [
   { id: "sad", label: "悲しい", image: moodSad },
@@ -17,9 +20,18 @@ export const moodExpressionsLuno = [
   { id: "happy", label: "楽しい", image: moodLunoHappy },
 ] as const;
 
+export const moodExpressionsCura = [
+  { id: "sad", label: "悲しい", image: moodCuraSad },
+  { id: "normal", label: "普通", image: moodCuraNormal },
+  { id: "happy", label: "楽しい", image: moodCuraHappy },
+] as const;
+
 export const getMoodExpressionsByCharacter = (characterId: string | null) => {
   if (characterId === "luno") {
     return moodExpressionsLuno;
+  }
+  if (characterId === "cura") {
+    return moodExpressionsCura;
   }
   return moodExpressions;
 };
