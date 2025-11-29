@@ -12,7 +12,7 @@ import { useCharacter } from "@/hooks/useCharacter";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
 import { AffectionIncreaseAnimation } from "./AffectionIncreaseAnimation";
 import { useVoiceRecording } from "@/hooks/useVoiceRecording";
-import { moodExpressions } from "@/lib/moodExpressions";
+import { getMoodExpressionsByCharacter } from "@/lib/moodExpressions";
 
 interface MoodLoggerProps {
   onRecordSuccess?: () => void;
@@ -29,6 +29,8 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
   const { selectedCharacter } = useCharacter();
   const { increaseAffection } = useCharacterAffection();
   const { isRecording, isProcessing, startRecording, stopRecording } = useVoiceRecording();
+  
+  const moodExpressions = getMoodExpressionsByCharacter(selectedCharacter?.id || null);
 
   const handleVoiceInput = async () => {
     if (isRecording) {
