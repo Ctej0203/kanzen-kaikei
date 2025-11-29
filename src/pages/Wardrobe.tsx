@@ -32,11 +32,13 @@ import suuStrawberry from "@/assets/suu-strawberry.png";
 
 // 画像マップ
 const characterImages: Record<string, string> = {
+  // Cura
   "cura-default": curaCharacter,
   "cura-doctor": curaDoctor,
   "cura-energetic": curaEnergetic,
   "cura-gentle": curaGentle,
   "cura-happy": curaHappy,
+  // Luno
   "luno-default": lunoCharacter,
   "luno-fish": lunoFish,
   "luno-komatsuna": lunoKomatsuna,
@@ -44,6 +46,7 @@ const characterImages: Record<string, string> = {
   "luno-natto": lunoNatto,
   "luno-santa": lunoSanta,
   "luno-tonakai": lunoTonakai,
+  // Suu
   "suu-default": suuCharacter,
   "suu-doctor": suuDoctor,
   "suu-edamame": suuEdamame,
