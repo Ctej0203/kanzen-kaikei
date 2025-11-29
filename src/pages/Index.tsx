@@ -122,47 +122,49 @@ const Index = () => {
       <UnifiedCalendar open={showCalendar} onOpenChange={setShowCalendar} defaultTab={calendarTab} />
 
       <header className="border-b bg-card/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-card border-2 border-primary/20 shadow-sm transition-all hover:scale-110 hover:shadow-md">
-                <img src={selectedCharacter.image} alt={selectedCharacter.name} className="w-full h-full object-contain p-1" />
+        <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-card border-2 border-primary/20 shadow-sm transition-all hover:scale-110 hover:shadow-md">
+                <img src={selectedCharacter.image} alt={selectedCharacter.name} className="w-full h-full object-contain p-0.5 sm:p-1" />
               </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-wiggle">
+              <h1 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-wiggle whitespace-nowrap">
                 ✨ Curely
               </h1>
             </div>
-            <div className="flex items-center gap-2">
-              <CoinBalance />
+            <div className="flex items-center gap-0.5 sm:gap-2 flex-wrap justify-end">
+              <div className="hidden xs:block">
+                <CoinBalance />
+              </div>
               <Button variant="ghost" size="icon" onClick={() => {
               setCalendarTab("login");
               setShowCalendar(true);
-            }} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all" title="カレンダー">
-                <Calendar className="h-5 w-5" />
+            }} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10" title="カレンダー">
+                <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => navigate("/mental-record")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all" title="こころの記録">
-                <Heart className="h-5 w-5" />
+              <Button variant="ghost" size="icon" onClick={() => navigate("/mental-record")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10" title="こころの記録">
+                <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => navigate("/breathing-guide")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all" title="呼吸法ガイド">
-                <Wind className="h-5 w-5" />
+              <Button variant="ghost" size="icon" onClick={() => navigate("/breathing-guide")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10 hidden sm:flex" title="呼吸法ガイド">
+                <Wind className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => navigate("/records")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all">
-                <FileText className="h-5 w-5" />
+              <Button variant="ghost" size="icon" onClick={() => navigate("/records")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10 hidden sm:flex">
+                <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
               <Button
                 variant="ghost" 
                 size="icon" 
                 onClick={() => window.open("https://curelyshop-fk6cmnpx.manus.space", "_blank")} 
-                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all" 
+                className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10 hidden sm:flex" 
                 title="ECサイト"
               >
-                <ShoppingBag className="h-5 w-5" />
+                <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => navigate("/settings")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all">
-                <Settings className="h-5 w-5" />
+              <Button variant="ghost" size="icon" onClick={() => navigate("/settings")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10">
+                <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={handleSignOut} className="hover-lift hover:bg-destructive/10 hover:text-destructive transition-all">
-                <LogOut className="h-5 w-5" />
+              <Button variant="ghost" size="icon" onClick={handleSignOut} className="hover-lift hover:bg-destructive/10 hover:text-destructive transition-all h-8 w-8 sm:h-10 sm:w-10">
+                <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
             </div>
           </div>
@@ -197,18 +199,18 @@ const Index = () => {
 
           <section className="hover-lift cursor-pointer" onClick={() => navigate("/online-consultation")}>
             <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all hover:border-primary/40">
-              <CardHeader className="p-6">
-                <div className="flex items-center gap-4 justify-between">
-                  <div className="flex items-center gap-4 mx-0 my-0 py-0">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 px-0 py-0 mx-[10px] my-0">
-                      <Video className="w-8 h-8 text-primary" />
+              <CardHeader className="p-4 sm:p-6">
+                <div className="flex items-center gap-3 sm:gap-4 justify-between">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Video className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                     </div>
-                    <div>
-                      <CardTitle className="text-3xl">オンライン診療</CardTitle>
-                      <CardDescription className="text-lg">専門家にオンラインで相談できます</CardDescription>
+                    <div className="min-w-0">
+                      <CardTitle className="text-xl sm:text-2xl md:text-3xl">オンライン診療</CardTitle>
+                      <CardDescription className="text-sm sm:text-base md:text-lg">専門家にオンラインで相談できます</CardDescription>
                     </div>
                   </div>
-                  <img src={curaDoctor} alt="Cura Doctor" className="w-64 h-64 object-contain flex-shrink-0" />
+                  <img src={curaDoctor} alt="Cura Doctor" className="hidden lg:block w-48 h-48 xl:w-64 xl:h-64 object-contain flex-shrink-0" />
                 </div>
               </CardHeader>
             </Card>
