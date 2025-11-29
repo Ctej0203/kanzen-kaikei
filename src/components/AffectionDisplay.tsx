@@ -36,7 +36,7 @@ export const AffectionDisplay = () => {
         />
         {nextThreshold > affection && (
           <div className="text-xs text-center text-muted-foreground">
-            Lv.{nextThreshold}で<span className="text-primary font-bold">50コイン</span>獲得！
+            Lv.{nextThreshold}で<span className="text-primary font-bold">{40 * (Math.floor(nextThreshold / 10) + 1)}コイン</span>獲得！
           </div>
         )}
       </div>
