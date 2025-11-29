@@ -5,7 +5,6 @@ import { User } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { HomehomeCard } from "@/components/HomehomeCard";
 import { MoodLogger } from "@/components/MoodLogger";
-import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
 import { LogOut, Settings, FileText, Heart, Video, Wind, ShoppingBag, Coins as CoinsIcon, Dices, Shirt } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
@@ -33,7 +32,6 @@ const Index = () => {
   const [calendarTab, setCalendarTab] = useState<"login" | "record">("login");
   const [shouldShowLoginCalendar, setShouldShowLoginCalendar] = useState(false);
   const [showAffectionAnimation, setShowAffectionAnimation] = useState(false);
-  const [scoreRefreshTrigger, setScoreRefreshTrigger] = useState(0);
   const {
     claimBonus
   } = useLoginBonus();
@@ -195,15 +193,11 @@ const Index = () => {
           </section>
 
           <section className="hover-lift">
-            <MentalScoreDisplay refreshTrigger={scoreRefreshTrigger} />
-          </section>
-
-          <section className="hover-lift">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
               <span className="text-3xl">📝</span>
               今日の日記
             </h2>
-            <MoodLogger onRecordSuccess={() => setScoreRefreshTrigger(prev => prev + 1)} />
+            <MoodLogger onRecordSuccess={() => {}} />
           </section>
 
           <section className="hover-lift cursor-pointer" onClick={() => navigate("/online-consultation")}>
