@@ -149,21 +149,6 @@ export const MoodLogger = ({ onRecordSuccess }: MoodLoggerProps = {}) => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-3">
-            <div className="flex justify-between text-sm font-medium">
-              <span className="text-lg">今日の調子: {moodScore[0]}</span>
-              <span className="text-muted-foreground">😢 0 - 10 😊</span>
-            </div>
-            <Slider
-              value={moodScore}
-              onValueChange={setMoodScore}
-              min={0}
-              max={10}
-              step={1}
-              className="w-full"
-            />
-          </div>
-
-          <div className="space-y-3">
             <label className="text-sm font-medium">今日の気分</label>
             <div className="flex justify-center gap-3 flex-wrap">
               {moodExpressions.map((expression) => (
