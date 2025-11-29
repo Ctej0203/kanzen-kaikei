@@ -145,10 +145,10 @@ const Index = () => {
               <Button variant="ghost" size="icon" onClick={() => navigate("/mental-record")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10" title="こころの記録">
                 <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => navigate("/breathing-guide")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10 hidden sm:flex" title="呼吸法ガイド">
+              <Button variant="ghost" size="icon" onClick={() => navigate("/breathing-guide")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10" title="呼吸法ガイド">
                 <Wind className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => navigate("/records")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10 hidden sm:flex">
+              <Button variant="ghost" size="icon" onClick={() => navigate("/records")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10">
                 <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
               <Button
