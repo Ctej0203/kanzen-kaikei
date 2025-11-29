@@ -18,7 +18,7 @@ import { AffectionDisplay } from "@/components/AffectionDisplay";
 import { AffectionIncreaseAnimation } from "@/components/AffectionIncreaseAnimation";
 import { useCharacterAffection } from "@/hooks/useCharacterAffection";
 import { ChatSection } from "@/components/ChatSection";
-import curaDoctor from "@/assets/cura-doctor.jpg";
+import consultationDoctor from "@/assets/consultation-doctor.png";
 const Index = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
@@ -207,8 +207,8 @@ const Index = () => {
           <section className="hover-lift cursor-pointer" onClick={() => navigate("/online-consultation")}>
             <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all hover:border-primary/40">
               <CardHeader className="p-4 sm:p-6">
-                <div className="flex items-center gap-3 sm:gap-4 justify-between">
-                  <div className="flex items-center gap-3 sm:gap-4">
+                <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                  <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                       <Video className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                     </div>
@@ -217,7 +217,13 @@ const Index = () => {
                       <CardDescription className="text-sm sm:text-base md:text-lg">専門家にオンラインで相談できます</CardDescription>
                     </div>
                   </div>
-                  <img src={curaDoctor} alt="Cura Doctor" className="hidden lg:block w-48 h-48 xl:w-64 xl:h-64 object-contain flex-shrink-0" />
+                  <div className="w-full sm:w-auto sm:flex-shrink-0">
+                    <img 
+                      src={consultationDoctor} 
+                      alt="オンライン診療" 
+                      className="w-full max-w-[200px] sm:max-w-[180px] md:max-w-[220px] h-auto object-contain mx-auto" 
+                    />
+                  </div>
                 </div>
               </CardHeader>
             </Card>
