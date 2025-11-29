@@ -36,7 +36,7 @@ export const AffectionIncreaseAnimation = ({
           </div>
         </div>
         <div className="text-center mt-2 text-sm font-bold text-primary animate-fade-in">
-          好感度アップ！
+          なかよしレベル＋{amount}
         </div>
       </div>
     </div>
