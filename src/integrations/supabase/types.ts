@@ -623,6 +623,7 @@ export type Database = {
         Args: { p_amount: number; p_source: string; p_user_id: string }
         Returns: undefined
       }
+      check_ai_quota: { Args: { p_user_id: string }; Returns: boolean }
       claim_daily_login_bonus: {
         Args: { p_user_id: string }
         Returns: {

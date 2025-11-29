@@ -87,17 +87,15 @@ serve(async (req) => {
     const isPremium = !!subscription;
     console.log("Premium status:", isPremium);
 
-    // 会話数を確認（無課金ユーザーは10レスポンスまで）
+    // 会話数を確認（無課金ユーザーは1日10レスポンスまで）
     if (!isPremium) {
-      const { count } = await supabase
-        .from("ai_conversations")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", user_id);
+      const { data: hasQuota } = await supabase
+        .rpc("check_ai_quota", { p_user_id: user_id });
 
-      if (count && count >= 10) {
+      if (!hasQuota) {
         return new Response(
           JSON.stringify({
-            error: "会話数が上限に達しました。プレミアムプランで無制限に会話できます。",
+            error: "本日の無料会話数が上限に達しました。明日リセットされます。プレミアムプランで無制限に会話できます。",
             code: "QUOTA_EXCEEDED",
           }),
           {
@@ -240,6 +238,11 @@ ${conversationsContext}
 
     if (saveError) {
       console.error("Error saving conversation:", saveError);
+    }
+
+    // クォータをインクリメント（無課金ユーザーのみ）
+    if (!isPremium) {
+      await supabase.rpc("increment_ai_quota", { p_user_id: user_id });
     }
 
     return new Response(

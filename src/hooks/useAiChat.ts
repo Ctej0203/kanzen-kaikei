@@ -35,8 +35,8 @@ export const useAiChat = () => {
     },
     onError: (error: any) => {
       if (error.message?.includes("429") || error.message?.includes("QUOTA_EXCEEDED")) {
-        toast.error("会話数が上限に達しました", {
-          description: "プレミアムプランで無制限に会話できます",
+        toast.error("本日の無料会話数が上限に達しました", {
+          description: "明日リセットされます。プレミアムプランで無制限に会話できます",
         });
       } else {
         toast.error("エラーが発生しました", {
