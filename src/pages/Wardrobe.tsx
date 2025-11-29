@@ -9,51 +9,7 @@ import { Lock, Sparkles, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useCharacter } from "@/hooks/useCharacter";
-
-// Assets imports
-import curaCharacter from "@/assets/cura-character-transparent.png";
-import curaDoctor from "@/assets/cura-doctor.jpg";
-import curaEnergetic from "@/assets/cura-energetic.png";
-import curaGentle from "@/assets/cura-gentle.png";
-import curaHappy from "@/assets/cura-happy.png";
-import lunoCharacter from "@/assets/luno-character.png";
-import lunoFish from "@/assets/luno-fish.png";
-import lunoKomatsuna from "@/assets/luno-komatsuna.png";
-import lunoMilk from "@/assets/luno-milk.png";
-import lunoNatto from "@/assets/luno-natto.png";
-import lunoSanta from "@/assets/luno-santa.png";
-import lunoTonakai from "@/assets/luno-tonakai.png";
-import suuCharacter from "@/assets/suu-character.png";
-import suuDoctor from "@/assets/suu-doctor.png";
-import suuEdamame from "@/assets/suu-edamame.png";
-import suuMacho from "@/assets/suu-macho.png";
-import suuPampukinn from "@/assets/suu-pampukinn.png";
-import suuStrawberry from "@/assets/suu-strawberry.png";
-
-// 画像マップ
-const characterImages: Record<string, string> = {
-  // Cura
-  "cura-default": curaCharacter,
-  "cura-doctor": curaDoctor,
-  "cura-energetic": curaEnergetic,
-  "cura-gentle": curaGentle,
-  "cura-happy": curaHappy,
-  // Luno
-  "luno-default": lunoCharacter,
-  "luno-fish": lunoFish,
-  "luno-komatsuna": lunoKomatsuna,
-  "luno-milk": lunoMilk,
-  "luno-natto": lunoNatto,
-  "luno-santa": lunoSanta,
-  "luno-tonakai": lunoTonakai,
-  // Suu
-  "suu-default": suuCharacter,
-  "suu-doctor": suuDoctor,
-  "suu-edamame": suuEdamame,
-  "suu-macho": suuMacho,
-  "suu-pampukinn": suuPampukinn,
-  "suu-strawberry": suuStrawberry,
-};
+import { itemImages, getItemImage } from "@/lib/itemImages";
 
 type Category = "outfit" | "accessory" | "background" | "effect";
 
@@ -135,7 +91,7 @@ export default function Wardrobe() {
   const getEquippedImage = () => {
     const equippedOutfit = equippedItems.find(item => item.items?.category === 'outfit');
     if (equippedOutfit?.items?.image_url) {
-      return characterImages[equippedOutfit.items.image_url] || selectedCharacter.image;
+      return getItemImage(equippedOutfit.items.image_url) || selectedCharacter.image;
     }
     return selectedCharacter.image;
   };
@@ -258,9 +214,9 @@ export default function Wardrobe() {
                         )}
                         
                         <div className="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg mb-2 flex items-center justify-center p-2">
-                          {item.category === 'outfit' && item.image_url && characterImages[item.image_url] ? (
+                          {item.category === 'outfit' && getItemImage(item.image_url) ? (
                             <img 
-                              src={characterImages[item.image_url]} 
+                              src={getItemImage(item.image_url)!} 
                               alt={item.name}
                               className="w-full h-full object-contain"
                             />
