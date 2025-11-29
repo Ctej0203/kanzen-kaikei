@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { EmergencyContacts } from "@/components/EmergencyContacts";
@@ -61,6 +61,23 @@ const Settings = () => {
         <ReferralSection />
         
         <EmergencyContacts />
+        
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-primary" />
+              <CardTitle>セキュリティ設定</CardTitle>
+            </div>
+            <CardDescription>
+              二段階認証でアカウントを保護します
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button onClick={() => navigate("/settings/2fa")}>
+              二段階認証を設定
+            </Button>
+          </CardContent>
+        </Card>
         
         <Card>
           <CardHeader>
