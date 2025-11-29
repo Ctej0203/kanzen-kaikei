@@ -6,16 +6,8 @@ import { Button } from "@/components/ui/button";
 import { HomehomeCard } from "@/components/HomehomeCard";
 import { MoodLogger } from "@/components/MoodLogger";
 import { MentalScoreDisplay } from "@/components/MentalScoreDisplay";
-import { LogOut, Settings, FileText, Heart, Video, Wind, ShoppingBag, Menu, Coins as CoinsIcon, Dices, Shirt } from "lucide-react";
+import { LogOut, Settings, FileText, Heart, Video, Wind, ShoppingBag, Coins as CoinsIcon, Dices, Shirt } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { toast } from "@/hooks/use-toast";
 import { CoinBalance } from "@/components/CoinBalance";
 import { LoginBonusPopup } from "@/components/LoginBonusPopup";
@@ -168,29 +160,15 @@ const Index = () => {
               >
                 <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10">
-                    <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-sm border-border/50">
-                  <DropdownMenuLabel>メニュー</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/coins")} className="cursor-pointer">
-                    <CoinsIcon className="h-4 w-4 mr-2" />
-                    <span>所持コイン確認</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/gacha")} className="cursor-pointer">
-                    <Dices className="h-4 w-4 mr-2" />
-                    <span>ガチャ</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/wardrobe")} className="cursor-pointer">
-                    <Shirt className="h-4 w-4 mr-2" />
-                    <span>着せ替え</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Button variant="ghost" size="icon" onClick={() => navigate("/coins")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10" title="所持コイン">
+                <CoinsIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={() => navigate("/gacha")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10" title="ガチャ">
+                <Dices className="h-4 w-4 sm:h-5 sm:w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={() => navigate("/wardrobe")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10" title="着せ替え">
+                <Shirt className="h-4 w-4 sm:h-5 sm:w-5" />
+              </Button>
               <Button variant="ghost" size="icon" onClick={() => navigate("/settings")} className="hover-lift hover:bg-secondary/50 hover:text-primary transition-all h-8 w-8 sm:h-10 sm:w-10">
                 <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
