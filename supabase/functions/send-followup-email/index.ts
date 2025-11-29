@@ -22,6 +22,18 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(null, { headers: corsHeaders });
   }
 
+  // Validate cron secret
+  const authHeader = req.headers.get("authorization");
+  const expectedSecret = Deno.env.get("CRON_SECRET");
+  
+  if (!expectedSecret || authHeader !== `Bearer ${expectedSecret}`) {
+    console.error("Unauthorized access attempt to send-followup-email");
+    return new Response(
+      JSON.stringify({ error: "Unauthorized" }),
+      { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  }
+
   try {
     console.log("Starting follow-up email job...");
 

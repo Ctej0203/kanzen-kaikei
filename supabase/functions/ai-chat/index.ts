@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -35,7 +36,25 @@ serve(async (req) => {
   }
 
   try {
-    const { message, user_id, character_id = "cura" } = await req.json();
+    // Input validation
+    const chatRequestSchema = z.object({
+      message: z.string().trim().min(1, "Message cannot be empty").max(2000, "Message too long"),
+      user_id: z.string().uuid("Invalid user ID"),
+      character_id: z.enum(["cura", "suu", "luno"]).default("cura")
+    });
+    
+    const requestBody = await req.json();
+    const validationResult = chatRequestSchema.safeParse(requestBody);
+    
+    if (!validationResult.success) {
+      console.error("Validation error:", validationResult.error);
+      return new Response(
+        JSON.stringify({ error: "入力データが正しくありません" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+    
+    const { message, user_id, character_id } = validationResult.data;
     console.log("Received chat request:", { user_id, message, character_id });
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
