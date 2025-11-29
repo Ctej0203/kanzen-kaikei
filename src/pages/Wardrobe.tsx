@@ -8,6 +8,49 @@ import { RarityBadge } from "@/components/RarityBadge";
 import { Lock, Sparkles, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useCharacter } from "@/hooks/useCharacter";
+
+// Assets imports
+import curaCharacter from "@/assets/cura-character-transparent.png";
+import curaDoctor from "@/assets/cura-doctor.jpg";
+import curaEnergetic from "@/assets/cura-energetic.png";
+import curaGentle from "@/assets/cura-gentle.png";
+import curaHappy from "@/assets/cura-happy.png";
+import lunoCharacter from "@/assets/luno-character.png";
+import lunoFish from "@/assets/luno-fish.png";
+import lunoKomatsuna from "@/assets/luno-komatsuna.png";
+import lunoMilk from "@/assets/luno-milk.png";
+import lunoNatto from "@/assets/luno-natto.png";
+import lunoSanta from "@/assets/luno-santa.png";
+import lunoTonakai from "@/assets/luno-tonakai.png";
+import suuCharacter from "@/assets/suu-character.png";
+import suuDoctor from "@/assets/suu-doctor.png";
+import suuEdamame from "@/assets/suu-edamame.png";
+import suuMacho from "@/assets/suu-macho.png";
+import suuPampukinn from "@/assets/suu-pampukinn.png";
+import suuStrawberry from "@/assets/suu-strawberry.png";
+
+// 画像マップ
+const characterImages: Record<string, string> = {
+  "cura-default": curaCharacter,
+  "cura-doctor": curaDoctor,
+  "cura-energetic": curaEnergetic,
+  "cura-gentle": curaGentle,
+  "cura-happy": curaHappy,
+  "luno-default": lunoCharacter,
+  "luno-fish": lunoFish,
+  "luno-komatsuna": lunoKomatsuna,
+  "luno-milk": lunoMilk,
+  "luno-natto": lunoNatto,
+  "luno-santa": lunoSanta,
+  "luno-tonakai": lunoTonakai,
+  "suu-default": suuCharacter,
+  "suu-doctor": suuDoctor,
+  "suu-edamame": suuEdamame,
+  "suu-macho": suuMacho,
+  "suu-pampukinn": suuPampukinn,
+  "suu-strawberry": suuStrawberry,
+};
 
 type Category = "outfit" | "accessory" | "background" | "effect";
 
@@ -15,6 +58,7 @@ export default function Wardrobe() {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<Category>("outfit");
   const queryClient = useQueryClient();
+  const { selectedCharacter } = useCharacter();
 
   const { data: userItems, isLoading } = useQuery({
     queryKey: ["user-items"],
@@ -84,6 +128,15 @@ export default function Wardrobe() {
   const equippedItems = userItems?.filter(item => item.is_equipped) || [];
   const ownedItemIds = new Set(userItems?.map(item => item.item_id) || []);
 
+  // 装備中のアイテムの画像を取得
+  const getEquippedImage = () => {
+    const equippedOutfit = equippedItems.find(item => item.items?.category === 'outfit');
+    if (equippedOutfit?.items?.image_url) {
+      return characterImages[equippedOutfit.items.image_url] || selectedCharacter.image;
+    }
+    return selectedCharacter.image;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-pink-50 to-purple-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -129,22 +182,35 @@ export default function Wardrobe() {
               <div className="relative aspect-square bg-gradient-to-b from-purple-100 to-pink-100 rounded-lg overflow-hidden">
                 {/* 背景 */}
                 {equippedItems.find(item => item.items?.category === 'background') && (
-                  <div className="absolute inset-0 opacity-50">
-                    <div className="w-full h-full bg-blue-200" />
+                  <div className="absolute inset-0 opacity-30">
+                    <div className="w-full h-full bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200" />
                   </div>
                 )}
                 
-                {/* Curaちゃん（プレースホルダー） */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-48 h-48 bg-pink-300 rounded-full flex items-center justify-center">
-                    <span className="text-6xl">👧</span>
-                  </div>
+                {/* キャラクター画像 */}
+                <div className="absolute inset-0 flex items-center justify-center p-8">
+                  <img 
+                    src={getEquippedImage()} 
+                    alt={selectedCharacter.name}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
 
                 {/* エフェクト */}
                 {equippedItems.find(item => item.items?.category === 'effect') && (
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="w-full h-full animate-pulse">✨</div>
+                  <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                    {[...Array(8)].map((_, i) => (
+                      <Sparkles
+                        key={i}
+                        className="absolute text-yellow-400 animate-float"
+                        style={{
+                          top: `${20 + Math.random() * 60}%`,
+                          left: `${20 + Math.random() * 60}%`,
+                          animationDelay: `${i * 0.3}s`,
+                        }}
+                        size={24}
+                      />
+                    ))}
                   </div>
                 )}
               </div>
@@ -188,13 +254,21 @@ export default function Wardrobe() {
                           </div>
                         )}
                         
-                        <div className="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg mb-2 flex items-center justify-center">
-                          <span className="text-4xl">
-                            {item.category === 'outfit' && '👗'}
-                            {item.category === 'accessory' && '🎀'}
-                            {item.category === 'background' && '🌸'}
-                            {item.category === 'effect' && '✨'}
-                          </span>
+                        <div className="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg mb-2 flex items-center justify-center p-2">
+                          {item.category === 'outfit' && item.image_url && characterImages[item.image_url] ? (
+                            <img 
+                              src={characterImages[item.image_url]} 
+                              alt={item.name}
+                              className="w-full h-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-4xl">
+                              {item.category === 'outfit' && '👗'}
+                              {item.category === 'accessory' && '🎀'}
+                              {item.category === 'background' && '🌸'}
+                              {item.category === 'effect' && '✨'}
+                            </span>
+                          )}
                         </div>
                         
                         <div className="space-y-1">
