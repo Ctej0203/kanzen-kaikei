@@ -123,7 +123,11 @@ const Index = () => {
         <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-              <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-card border-2 border-primary/20 shadow-sm transition-all hover:scale-110 hover:shadow-md">
+              <div 
+                className="w-8 h-8 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-card border-2 border-primary/20 shadow-sm transition-all hover:scale-110 hover:shadow-md cursor-pointer"
+                onClick={() => navigate("/character-select")}
+                title="キャラクターを変更"
+              >
                 <img src={selectedCharacter.image} alt={selectedCharacter.name} className="w-full h-full object-contain p-0.5 sm:p-1" />
               </div>
               <h1 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-wiggle whitespace-nowrap">
