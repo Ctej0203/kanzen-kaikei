@@ -10,6 +10,7 @@ import { useCoins } from "@/hooks/useCoins";
 import { useGacha } from "@/hooks/useGacha";
 import { Sparkles, Info, Gift, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getItemImage } from "@/lib/itemImages";
 
 interface GachaResult {
   item_id: string;
@@ -17,6 +18,7 @@ interface GachaResult {
   is_new: boolean;
   name?: string;
   description?: string;
+  image_url?: string;
 }
 
 export default function Gacha() {
@@ -65,6 +67,7 @@ export default function Gacha() {
         ...r,
         name: item?.name,
         description: item?.description,
+        image_url: item?.image_url,
       };
     });
 
@@ -342,11 +345,19 @@ export default function Gacha() {
                       ))}
                     </>
                   )}
-                  <span className={`text-6xl relative z-10 ${result.rarity === 'SSR' ? 'animate-wiggle' : ''}`}>
-                    {result.rarity === 'SSR' && '🌟'}
-                    {result.rarity === 'SR' && '⭐'}
-                    {result.rarity === 'R' && '✨'}
-                  </span>
+                  {result.image_url && getItemImage(result.image_url) ? (
+                    <img 
+                      src={getItemImage(result.image_url)!} 
+                      alt={result.name}
+                      className={`w-full h-full object-contain p-2 relative z-10 ${result.rarity === 'SSR' ? 'animate-wiggle' : ''}`}
+                    />
+                  ) : (
+                    <span className={`text-6xl relative z-10 ${result.rarity === 'SSR' ? 'animate-wiggle' : ''}`}>
+                      {result.rarity === 'SSR' && '🌟'}
+                      {result.rarity === 'SR' && '⭐'}
+                      {result.rarity === 'R' && '✨'}
+                    </span>
+                  )}
                 </div>
                 
                 <div className="relative z-10">
